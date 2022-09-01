@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisterController;
-
+use App\Http\Controllers\CountryCode;;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -16,6 +16,10 @@ use App\Http\Controllers\Auth\RegisterController;
 */
 
 Route::post('/register', [RegisterController::class, 'create']);
+
+
+# PUBLIC ROUTES 
+Route::get("/country_code" , [CountryCode::class, 'index'] );
 
 
 

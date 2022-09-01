@@ -167,14 +167,26 @@
                                                             <div class="form-outline">
                                                                 <label class="form-label control-label">Mobile Number</label>
                                                                 
-                                                                <select v-model="selected">
-                                                                    <option :value="citizen" v-for="citizen of this.$store.state.country_code" :key="key">{{citizen}}</option>
-                                                                </select>
-                                                                <Field name="mobile"  type="text" class="flat-input form-control" placeholder="Mobile" />
-
-                                                                <!-- <vue-tel-input mode="international" name="mobile" v-model="userData.mobile"></vue-tel-input> -->
+                                                               <div class="row">
+                                                                    <div class="col-3">
+                                                                         <Field class=""  name="country_code">
+                                                                            <select>
+                                                                                <option value="">PhoneCode</option>
+                                                                                <option v-for="item in country_code" :value="item.id">
+                                                                                    {{item.iso}} +{{ item.phonecode }}
+                                                                                </option>
+                                                                            </select>
+                                                                        </Field>
+                                                                       
+                                                                    </div>
+                                                                    <div class="col-8">
+                                                                        <Field name="mobile"  type="text" class="flat-input form-control" placeholder="Mobile" />
+                                                                        <ErrorMessage class="text-danger errormessage " name="mobile" />
+                                                                    </div>
+                                                               </div>
                                                                 
-                                                                <ErrorMessage class="text-danger errormessage " name="mobile" />
+                                                              
+                                                               
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6 profile-form">
@@ -253,7 +265,8 @@
         components: {
             Form,
             Field,
-            ErrorMessage
+            ErrorMessage,
+            
             
           
         },
@@ -275,7 +288,8 @@
                 country: '',
                 region: '',
                 schema , 
-                userData : []
+                userData : [] ,
+                country_code :[]
             }
            
         }, 
@@ -296,8 +310,14 @@
             // get user token
             axios.get('api/user',config).then(response => {
                 this.userData = response.data
-                
                 this.userData.lastname = this.userData.lastname.charAt(0).toUpperCase() + this.userData.lastname.slice(1);
+            }).catch((error) => {
+               
+            });
+
+            // get country code 
+            axios.get('api/country_code',config).then(response => {
+                this.country_code = response.data
             }).catch((error) => {
                
             });
@@ -386,6 +406,31 @@ select {
         align-content: center;
         align-items: center;
     }
+
+    .input-group-text {
+        /* display: flex; */
+        /* align-items: center; */
+        padding: 0.375rem 0.75rem;
+        font-size: 0.9rem;
+        font-weight: 400;
+        line-height: 1.6;
+        color: #212529;
+        text-align: center;
+        white-space: nowrap;
+        background-color: #e9ecef;
+        /* border: 1px solid #ced4da; */
+        border-radius: 0.375rem;
+    }
+
+    .input-group-prepend {
+        width: 21%;
+    }
+
+    .country_code_class {
+        position: absolute;
+    }
+
+
 /* Extra small devices (phones, 600px and down) */
   @media only screen and (max-width: 600px) {
     .navigation-top{
