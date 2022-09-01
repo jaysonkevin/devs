@@ -14,7 +14,7 @@ class Authenticate extends Middleware
      */
     protected function redirectTo($request)
     {   
-    
+        // pogi
         if (! $request->expectsJson()) {
             //return redirect()->route('/');
             return route('login');
