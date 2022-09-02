@@ -29,6 +29,19 @@
 
                             </p>
                             <p class="text-muted mb-4">Bay Area, San Francisco, CA</p>
+                            <p class="text-muted mb-4">
+                                <div class="ml-4">
+                                    <select>
+                                        <option value="">Phone Code</option>
+                                        <option v-for="item in country_code" :value="item.id">
+                                            {{item.iso}} +{{ item.phonecode }}
+                                        </option>
+                                    </select>
+                                    <input type="tel" class="flat-input" placeholder="Mobile Number"/>
+                                </div>
+                               
+
+                            </p>
                         </div>
                     </div>
 
@@ -163,7 +176,7 @@
                                                                 <ErrorMessage class="text-danger errormessage " name="lastname" />
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-6 profile-form">
+                                                        <!-- <div class="col-md-6 profile-form">
                                                             <div class="form-outline">
                                                                 <label class="form-label control-label">Mobile Number</label>
                                                                 
@@ -188,7 +201,7 @@
                                                               
                                                                
                                                             </div>
-                                                        </div>
+                                                        </div> -->
                                                         <div class="col-md-6 profile-form">
                                                             <div class="form-outline">
                                                                 <label class="form-label control-label">Date of Birth</label>
