@@ -25,6 +25,7 @@
                         <div class="d-grid gap-2">
                             <button class="btn  mt-3 btn-theme" :disabled="isSubmitting">Login <i v-show="isSubmitting" class="fa fa-spin fa-spinner"></i></button>
                         </div>
+                       
                     </Form>
                 </div>
             </div>
@@ -63,8 +64,7 @@
                 if(values.next == '_next_valid_login_') values.is_valid_ =true;
                 if(values.next == undefined) values.next="_next_valid_login_"; values.is_valid_ = false;
                 
-                
-                
+            
                 axios.get('/sanctum/csrf-cookie').then(response => {
                     axios.post('/login', values).then(response => {
 
@@ -73,11 +73,8 @@
                             return false
                         } else{
                             this.errorMessage = false;
-                            
-                            this.$store.commit("setAuthentication", true);
-                           
-                            //this.$router.replace({ name: "model" });
-
+                            //this.$store.commit("setAuthentication", true);
+                            this.$router.replace({ name: "model" });
                             localStorage.setItem('u_t',response.data); 
                         }
 
@@ -89,7 +86,19 @@
            
         },
         mounted () {
-            
+            const token =  localStorage.getItem('u_t'); 
+            const config = {
+                headers: { Authorization: `Bearer ${token}` }
+            };
+            axios.get('api/cUL',config).then(response => {
+                if(response.data) {
+                    if(response.data.type =="M"){
+                        this.$router.replace({ name: "model" });
+                    } else{
+                        this.$router.replace({ name: "employer" });
+                    }
+                }
+            });
         }
     }
 </script>

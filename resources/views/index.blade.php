@@ -12,8 +12,10 @@
        
        <div id="app">
             <router-view></router-view>
+           
        </div>
        <div id="modals"></div>
+      
       
     </body>
     <script src="{{ asset('js/app.js') }}"></script>

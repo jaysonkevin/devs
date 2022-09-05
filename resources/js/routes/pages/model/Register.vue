@@ -12,7 +12,7 @@
             <div class="rounded d-flex justify-content-center">
                 <div class="col-md-4 col-sm-12 shadow-lg p-5 bg-light">
                     <div class="text-center">
-                        <h3>Start your modeling career here</h3>
+                        <h3>Start your modeling career here <i class="flag flag-india"></i></h3>
                     </div>
                     <div class="p-1">
                         <Form  class="form" @submit="registerModel"  :validation-schema="schema"  ref="form">
@@ -23,6 +23,18 @@
                             <div class="col-md-12 mb-3">
                                 <Field name="lastname" type="text" class="flat-input form-control" placeholder="Last Name" />
                                 <small><ErrorMessage class="text-danger errormessage " name="lastname" /></small>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <vSelect :options="countryList" label="country_name" :reduce="countryList => countryList.country_code" v-model="country">
+                                    <template #search="{attributes, events}">
+                                        <input
+                                            class="vs__search"
+                                            v-bind="attributes"
+                                            v-on="events"
+                                        />
+                                </template>
+                                </vSelect>
+                                <small><span role="alert" v-if="countryError" class="text-danger errormessage">select country </span></small>
                             </div>
                             <div class="col-md-12 mb-3">
                                 <Field name="email" type="email" class="flat-input form-control" placeholder="Email" />
@@ -79,7 +91,7 @@
     import * as yup from 'yup';
     import TermsModal from '../../../components/TermsModal.vue';
     import PrivacyModal from '../../../components/PrivacyModal.vue';
-
+    import vSelect from 'vue-select'
 
     export default {
     components: {
@@ -87,7 +99,8 @@
         Field,
         ErrorMessage,
         TermsModal,
-        PrivacyModal
+        PrivacyModal,
+        vSelect
     },
    
     data() {
@@ -98,6 +111,7 @@
             email: yup.string().required("must be a valid email").email(),
             password: yup.string().required().min(6),
             agree : yup.bool().required("You need to accept"),
+         
             
         });
 
@@ -107,7 +121,10 @@
             isShow : true,
             modalShowTerms : false,
             modalShowPrivacy : false,
-            preloading : true
+            preloading : true ,
+            country : 'Select Country',
+            countryError : false,
+            countryList : []
         };
     },
     methods: {
@@ -116,21 +133,24 @@
         },
         registerModel(values , actions) { 
             
-           
-            
+            if(this.country == "" || this.country == null){
+                this.countryError = !this.countryError
+                return false
+            }
+        
+            values.country_code = this.country;
 
-   
             // reset if no errors on registration
            //this.$refs.form.resetForm();
-
-
+          
+           
             axios.post("/api/register" ,values)
             .then(response =>{
                 
                if(response.data.has_error){
                     //error message from api
                     const errorApi = {
-                        email  : "Email already in used!"
+                        email  : response.data.message
                     };
 
                     //set multiple errors
@@ -154,9 +174,11 @@
     mounted () {
         this.$nextTick(function () {
             this.preloading = !this.preloading 
-           
         })
-     
+
+        axios.get("/api/country").then(response =>{
+            this.countryList = response.data
+        }); 
     }
 };
 </script>

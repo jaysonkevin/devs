@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Auth\Events\Registered;
 
+use App\Models\Country;
 class RegisterController extends Controller
 {
     /*
@@ -51,17 +52,12 @@ class RegisterController extends Controller
      */
     protected function validator(Request $data)
     {
-    //     return Validator::make($data, [
-    //         'firstname' => ['required', 'string', 'max:255'],
-    //         'lastname' => ['required', 'string', 'max:255'],
-    //         'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-    //         'password' => ['required', 'string', 'min:8', 'confirmed'],
-    //     ] ,
-    //     [
-    //         'email.unique'=>'The User Email must be a valid email address'
-    //     ]
-    
-    // );
+        // return Validator::make($data, [
+        //     'firstname' => ['required', 'string', 'max:255'],
+        //     'lastname' => ['required', 'string', 'max:255'],
+        //     'password' => ['required', 'string', 'min:8', 'confirmed'],
+        //     'country_code' => ['required', 'string', 'max:3'],
+        // ]);
 
     }
 
@@ -82,6 +78,7 @@ class RegisterController extends Controller
             'lastname' => $data['lastname'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'country_code' => $data['country_code']
         ]);
 
         event(new Registered($user));
@@ -90,15 +87,30 @@ class RegisterController extends Controller
     }
 
     private function registerValidation ($data){
-       $result = User::where("email" , $data['email'])->first();
-       if($result){
-          echo json_encode(
 
-            array(
-                "has_error" => true ,
-                "message" => "Email already in used!"
-            )
-          );die;
-       }
+      
+        # CHECK IF COUNTRY CODE IS ON LIST
+        $checkList = Country::where("country_code", $data['country_code'])->get();
+       
+        if(!$checkList){
+            echo json_encode(
+
+                array(
+                    "has_error" => true ,
+                    "message" => "Something went wrong!"
+                )
+            );die;
+        }
+
+        $result = User::where("email" , $data['email'])->first();
+        if($result){
+            echo json_encode(
+
+                array(
+                    "has_error" => true ,
+                    "message" => "Email already in used!"
+                )
+            );die;
+        }
     }
 }

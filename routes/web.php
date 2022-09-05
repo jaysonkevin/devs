@@ -21,8 +21,12 @@ Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $requ
     $request->fulfill();
     return redirect('/');
 })->middleware(['signed'])->name('verification.verify');
-
-
+Route::get('/model/register', function () {
+    return view('index');
+});
+Route::get('/model/login', function () {
+    return view('index');
+});
 Route::get('/', function () {
     return view('index');
 });
@@ -30,12 +34,11 @@ Route::get('/', function () {
 
 
 
+#TESTING ROUTES
 Route::middleware('auth:sanctum')->get('removetoken', function () {
     return  auth()->user()->tokens()->delete();
 });
-
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-
     return $request->user();
 });
 

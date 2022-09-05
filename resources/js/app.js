@@ -6,19 +6,18 @@ import {createRouter ,createWebHistory} from 'vue-router';
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import vueCountryRegionSelect from 'vue3-country-region-select'
+import 'vue-select/dist/vue-select.css';
+import VueUniversalModal from 'vue-universal-modal'
+import 'vue-universal-modal/dist/index.css'
 
-
-
+const token =  localStorage.getItem('u_t'); 
 window.axios.defaults.baseURL = process.env.MIX_PUBLIC_URL
 window.axios.defaults.withCredentials = true;
 window.axios.defaults.headers.common = {
   'X-Requested-With': 'XMLHttpRequest',
+  'Authorization': `Bearer ${token}` 
 
 };
-
-
-
-import VueUniversalModal from 'vue-universal-modal'
 
 
 
@@ -29,6 +28,7 @@ const store = new Vuex.Store(
           _user_ : '',
           modalShowPrivacy : false,
           modalShowTerms : false ,
+          
        
       },
       mutations: {
@@ -37,7 +37,7 @@ const store = new Vuex.Store(
           },
           setModalPrivacy (state, status) {
             state.modalShowPrivacy = status;
-          },
+          }
 
       }
   }
@@ -84,7 +84,7 @@ let featured = createApp({
 .use(store)
 .use(vueCountryRegionSelect)
 .use(VueUniversalModal, {
-  teleportTarget: '#modals'
+  teleportTarget: '#modals',
 })
 
 

@@ -3,7 +3,9 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\CountryCode;;
+use App\Http\Controllers\CountryController;
+use App\Http\Controllers\AuthCheckerController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -15,19 +17,21 @@ use App\Http\Controllers\CountryCode;;
 |
 */
 
-Route::post('/register', [RegisterController::class, 'create']);
-
-
 # PUBLIC ROUTES 
-Route::get("/country_code" , [CountryCode::class, 'index'] );
+
+Route::post('/register', [RegisterController::class, 'create']);
+Route::get("/country" , [CountryController::class, 'index'] );
+Route::get("/ip" , [CountryController::class, 'getIp'] );
+
 
 
 
 # PROTECTED ROUTES VIA SANCTUM
 Route::group(['middleware'=>['auth:sanctum']] , function(){
-    Route::get("/user" , function(){
-        return auth()->user();
-    });
+    
+    Route::get("/cUL" , [AuthCheckerController::class, 'index'] ); # check user logged
+    Route::post("/updateinfo" , [AuthCheckerController::class, 'updateinfo'] );
+    Route::post("/updateinfosocial" , [AuthCheckerController::class, 'updateinfosocial'] );
 });
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

@@ -31,6 +31,7 @@
         "vue-axios": "^3.4.1",
         "vue-country-region-select": "^2.0.16",
         "vue-router": "^4.0.13",
+        "vue-select": "^4.0.0-beta.5",
         "vue-universal-modal": "^1.1.4",
         "vue3-country-region-select": "^1.0.0",
         "vue3-tel-input": "^1.0.4",

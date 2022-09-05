@@ -21,8 +21,5 @@ class Helper {
            echo json_encode(["error"=> "Something went wrong!"]);die;
            
         } 
-
-       
-       
     }
 }
