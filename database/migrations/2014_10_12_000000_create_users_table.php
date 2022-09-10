@@ -33,8 +33,14 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->text('folder');
             $table->rememberToken();
             $table->timestamps();
+
+            $table->index(['user_status']);
+            $table->index(['type' ,'user_status']);
+            $table->index(['country_code']);
+            $table->index(['region']);
         });
     }
 

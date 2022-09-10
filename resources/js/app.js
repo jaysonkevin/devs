@@ -56,8 +56,14 @@ const routes = [
     // restricted pages
     {
       path : "/employer",
-      component: () => import("./routes/pages/employer/restricted/Employer.vue")
+      name :"employer",
+      component: () => import("./routes/pages/employer/EmployerLanding.vue")
     },
+    {
+        path : "/employer/home",
+        name :"employer/home",
+        component: () => import("./routes/pages/employer/restricted/Employer.vue")
+      },
     {
       path : "/model",
       name :"model",

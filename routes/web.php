@@ -30,6 +30,12 @@ Route::get('/model/login', function () {
 Route::get('/', function () {
     return view('index');
 });
+Route::get('/employer', function () {
+    return view('index');
+});
+Route::get('/employer/register', function () {
+    return view('index');
+});
 
 
 
@@ -46,6 +52,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // # AUTHENTICATED LINKS
 Route::group(['middleware'=>['auth:sanctum']] , function(){
+
+    Route::get('/{any}', function () {
+        return view('index');
+    });
     Route::get('/{any}', function () {
         return view('index');
     });

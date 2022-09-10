@@ -12,6 +12,8 @@ use Illuminate\Http\Request;
 use Illuminate\Auth\Events\Registered;
 
 use App\Models\Country;
+use App\Models\EmployerCompany;
+use File;
 class RegisterController extends Controller
 {
     /*
@@ -69,17 +71,54 @@ class RegisterController extends Controller
      */
     protected function create(Request $data)
     {   
-        
+
+
+       
         $this->registerValidation($data);
 
-        
+        $folder = str_replace(' ', '', strtolower(time().'-'.substr(Hash::make($data['password']), -4))); 
+       
+       
+       
         $user =  User::create([
             'firstname' => $data['firstname'],
             'lastname' => $data['lastname'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'country_code' => $data['country_code']
+            'type' => $data['type'], 
+            'country_code' => $data['country_code'] ,
+            'folder' => ''
+            
         ]);
+
+
+        $user = User::where('id' , $user->id)->first();
+        $user->folder = $user->id.$folder;
+        $user->save();
+
+
+        # CREATE FOLDER
+        $path = storage_path('photo/'.$user->folder);
+        if(!File::exists($path)) {
+            File::makeDirectory($path, 0777, true, true);
+        }
+
+        # ADD COMPANY DETAILS
+        if($data['type'] == 'E') {
+            EmployerCompany::create([
+                'user_id' => $user->id,
+                'company_name' => $data['companyName'] ,
+                'company_display' => $data['companyDisplay'],
+                'company_description' => $data['company_description'] 
+            ]);
+        }
+
+
+        # CREATE FOLDER
+        $path = public_path('photo/'.$folder);
+        if(!File::exists($path)) {
+            // path does not exist
+        }
 
         event(new Registered($user));
 
@@ -109,6 +148,16 @@ class RegisterController extends Controller
                 array(
                     "has_error" => true ,
                     "message" => "Email already in used!"
+                )
+            );die;
+        }
+
+        # PASSWORD VALIDATION
+        if(strlen($data['password']) < 6) {
+            echo json_encode(
+                array(
+                    "has_error" => true ,
+                    "message" => "password must be at least 6 characters!"
                 )
             );die;
         }

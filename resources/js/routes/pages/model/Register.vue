@@ -12,7 +12,7 @@
             <div class="rounded d-flex justify-content-center">
                 <div class="col-md-4 col-sm-12 shadow-lg p-5 bg-light">
                     <div class="text-center">
-                        <h3>Start your modeling career here <i class="flag flag-india"></i></h3>
+                        <h3>Start your modeling career here</h3>
                     </div>
                     <div class="p-1">
                         <Form  class="form" @submit="registerModel"  :validation-schema="schema"  ref="form">
@@ -139,7 +139,7 @@
             }
         
             values.country_code = this.country;
-
+            values.type = 'M';
             // reset if no errors on registration
            //this.$refs.form.resetForm();
           
@@ -158,7 +158,7 @@
                         errorApi
                     );
                } else{
-                alert("wala")
+                //alert("wala")
                }
             });
             

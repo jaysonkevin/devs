@@ -74,8 +74,9 @@
                         } else{
                             this.errorMessage = false;
                             //this.$store.commit("setAuthentication", true);
-                            this.$router.replace({ name: "model" });
                             localStorage.setItem('u_t',response.data); 
+                            this.$router.replace({ name: "model" });
+                            
                         }
 
                       
@@ -86,19 +87,20 @@
            
         },
         mounted () {
-            const token =  localStorage.getItem('u_t'); 
-            const config = {
-                headers: { Authorization: `Bearer ${token}` }
-            };
-            axios.get('api/cUL',config).then(response => {
-                if(response.data) {
-                    if(response.data.type =="M"){
-                        this.$router.replace({ name: "model" });
-                    } else{
-                        this.$router.replace({ name: "employer" });
-                    }
+ 
+            axios.get('api/_c_').then(response => {
+                if(response.data.has_error == false){
+                    axios.get('api/cUL').then(response => {
+                        if(response.data) {
+                            this.$router.replace({ name: "model" });
+                        }
+                    });
                 }
+            }).catch((error) => {
+            
             });
+          
+           
         }
     }
 </script>

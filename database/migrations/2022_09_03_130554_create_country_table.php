@@ -17,8 +17,7 @@ class CreateCountryTable extends Migration
             $table->id();
             $table->string('country_name');
             $table->integer('phone_code')->length(5)->unsigned();
-            $table->char('country_code',3);
-          
+            $table->char('country_code',3);          
         });
     }
 

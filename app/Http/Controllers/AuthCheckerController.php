@@ -5,11 +5,27 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\AuthChecker;
 use Helper;
+use Session;
+use Cookie;
+use App\Models\EmployerCompany;
 class AuthCheckerController extends Controller
 {
     public function index () {
         if(auth()->user()){
             $result = AuthChecker::where("id" ,auth()->user()->id )->first();
+          
+            if($result->type == 'E'){
+                $company = EmployerCompany::where("user_id" ,  $result->id)->first();
+                $c = [
+                    "company_name" => (isset($company->company_name)) ?  $company->company_name  : '',
+                    "company_display" => (isset($company->company_display)) ?  $company->company_display : '',
+                    "company_description" =>  (isset($company->company_description)) ? $company->company_description : '',
+
+                ];
+            } else{
+                $c = [];
+            }
+
           
             return response()->json([
                 "u" => array(
@@ -28,8 +44,27 @@ class AuthCheckerController extends Controller
                     "tiktok" =>  ($result->tiktok != null) ? $result->tiktok : 'N/A' ,
                     "user_status" => $result->user_status,
                     "email" => $result->email, 
-                )
+                ),
+                "c" => $c
             ]);
+        }
+    }
+
+
+    public function checker () {
+      
+        if(auth()->user('santum') == null){
+            return response()->json([
+                "has_error" => true,
+                "message" => "logout"
+            ]);
+            
+        } else{
+            return response()->json([
+                "has_error" => false,
+                "message" => "login"
+            ]);
+            
         }
     }
 
@@ -74,5 +109,13 @@ class AuthCheckerController extends Controller
             "has_error" => false,
             "message" => "success"
         ]);
+    }
+
+    public function logout (Request $request) {
+
+        $request->user()->tokens()->delete();
+       
+    
+
     }
 }

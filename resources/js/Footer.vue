@@ -13,13 +13,13 @@
 					Useful Links
 				</h6>
 				<p>
-					<router-link class="footer-links" to="/about">About Us</router-link>
+					<router-link class="footer-links" to="/">About Us</router-link>
 				</p>
 				<p>
-					<router-link class="footer-links" to="/about">Contact Us</router-link>
+					<router-link class="footer-links" to="/">Contact Us</router-link>
 				</p>
 				<p>
-					<router-link class="footer-links" to="/about">Privacy Policy</router-link>
+					<router-link class="footer-links" to="/">Privacy Policy</router-link>
 				</p>
 			
 				</div>
@@ -32,13 +32,13 @@
 					Employer
 				</h6>
 				<p>
-					<router-link class="footer-links" to="/about">Pricing</router-link>
+					<router-link class="footer-links" to="/">Pricing</router-link>
 				</p>
 				<p>
-					<router-link class="footer-links" to="/about">Employer FAQ</router-link>
+					<router-link class="footer-links" to="/">Employer FAQ</router-link>
 				</p>
 				<p>
-					<router-link class="footer-links" to="/about">Contact Us</router-link>
+					<router-link class="footer-links" to="/">Contact Us</router-link>
 				</p>
 				</div>
 				<!-- Grid column -->
@@ -50,10 +50,10 @@
 					Models
 				</h6>
 				<p>
-					<router-link class="footer-links" to="/about">Models FAQ</router-link>
+					<router-link class="footer-links" to="/">Models FAQ</router-link>
 				</p>
 				<p>
-					<router-link class="footer-links" to="/about">Contact Us</router-link>
+					<router-link class="footer-links" to="/">Contact Us</router-link>
 				</p>
 		
 				</div>

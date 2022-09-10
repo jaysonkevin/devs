@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\AuthCheckerController;
+use App\Http\Controllers\UserImageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,10 +29,18 @@ Route::get("/ip" , [CountryController::class, 'getIp'] );
 
 # PROTECTED ROUTES VIA SANCTUM
 Route::group(['middleware'=>['auth:sanctum']] , function(){
+
+    # CHECK IF USER HAS LOGGED IN
+    Route::get("/_c_" , [AuthCheckerController::class, 'checker'] ); # check user logged
     
     Route::get("/cUL" , [AuthCheckerController::class, 'index'] ); # check user logged
+    # MODEL
     Route::post("/updateinfo" , [AuthCheckerController::class, 'updateinfo'] );
     Route::post("/updateinfosocial" , [AuthCheckerController::class, 'updateinfosocial'] );
+    Route::get("/getImage" , [UserImageController::class, 'index'] );
+    Route::post('imageUpload', [ UserImageController::class, 'imageUpload' ]);
+    Route::post('logout', [ AuthCheckerController::class, 'logout' ]);
+    #END MODEL
 });
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
