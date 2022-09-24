@@ -1,9 +1,12 @@
 <template>
     <div id="img-tab" class="tab-pane fade in active show">
-       
-        <section class="mt-5">
-            <p><i  data-bs-toggle="modal" data-bs-target="#add_image" class="fa fa-plus">add image</i></p>
-            <small>Upload your updated photos and attract your employers!</small>
+        <section class="mt-3">
+            <small>
+                <p>
+                    <i  data-bs-toggle="modal" title="add image" data-bs-target="#add_image" class="fa-solid add-image fa-circle-plus"></i>
+                    Upload your updated photos and attract your employers!   
+                </p>
+            </small>
           
             <div class="row">
                 <div class="col-md-4 col-xs-4" v-for="(item, index) in imagesHolder">
@@ -35,6 +38,7 @@
         </div>
     </div>
 
+    
     <div class="modal fade" id="add_image" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">

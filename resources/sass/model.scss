@@ -123,6 +123,15 @@ select {
         height: 270px;
     }
 
+    .add-image {
+        cursor: pointer;
+        font-size: 25px;
+    }
+
+    .ispointer {
+        cursor: pointer;
+    }
+
 /* Extra small devices (phones, 600px and down) */
   @media only screen and (max-width: 600px) {
     .navigation-top{

@@ -67,14 +67,15 @@
             
                 axios.get('/sanctum/csrf-cookie').then(response => {
                     axios.post('/login', values).then(response => {
-
+                        console.log(response.data)
                         if(response.data.error !== undefined){
                             this.errorMessage = !this.errorMessage
                             return false
                         } else{
                             this.errorMessage = false;
-                            //this.$store.commit("setAuthentication", true);
                             localStorage.setItem('u_t',response.data); 
+                            
+
                             this.$router.replace({ name: "model" });
                             
                         }

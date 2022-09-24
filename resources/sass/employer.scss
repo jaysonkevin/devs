@@ -59,86 +59,120 @@ select {
     }
 
 
+.shadow-2-strong {  
+    height: 250px;
+}
+.img-card{
+    margin-bottom: 1rem;
+}
+.nav-link.active{
+    background-color: var(--theme) !important;
+    color : #fff !important;
+}
+.nav-link{
+    color :black
+}
 
-    .shadow-2-strong {  
-        height: 250px;
-    }
-    .img-card{
-        margin-bottom: 1rem;
-    }
-    .nav-link.active{
-        background-color: var(--theme) !important;
-        color : #fff !important;
-    }
-    .nav-link{
-        color :black
-    }
+.navs{
+    --bs-nav-link-padding-x: 1rem;
+    --bs-nav-link-padding-y: 0.5rem;
+    --bs-nav-link-font-weight: ;
+    --bs-nav-link-color: var(--bs-link-color);
+    --bs-nav-link-hover-color: var(--bs-link-hover-color);
+    --bs-nav-link-disabled-color: #6c757d;
+    display: flex;
+    /* flex-wrap: wrap; */
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+    white-space: nowrap;
+    
+}
 
-    .navs{
-        --bs-nav-link-padding-x: 1rem;
-        --bs-nav-link-padding-y: 0.5rem;
-        --bs-nav-link-font-weight: ;
-        --bs-nav-link-color: var(--bs-link-color);
-        --bs-nav-link-hover-color: var(--bs-link-hover-color);
-        --bs-nav-link-disabled-color: #6c757d;
-        display: flex;
-        /* flex-wrap: wrap; */
-        padding-left: 0;
-        margin-bottom: 0;
-        list-style: none;
-        white-space: nowrap;
-        
-    }
+.navigation-top{
+    align-content: center;
+    align-items: center;
+}
 
-    .navigation-top{
-        align-content: center;
-        align-items: center;
-    }
+.input-group-text {
+    /* display: flex; */
+    /* align-items: center; */
+    padding: 0.375rem 0.75rem;
+    font-size: 0.9rem;
+    font-weight: 400;
+    line-height: 1.6;
+    color: #212529;
+    text-align: center;
+    white-space: nowrap;
+    background-color: #e9ecef;
+    /* border: 1px solid #ced4da; */
+    border-radius: 0.375rem;
+}
 
-    .input-group-text {
-        /* display: flex; */
-        /* align-items: center; */
-        padding: 0.375rem 0.75rem;
-        font-size: 0.9rem;
-        font-weight: 400;
-        line-height: 1.6;
-        color: #212529;
-        text-align: center;
-        white-space: nowrap;
-        background-color: #e9ecef;
-        /* border: 1px solid #ced4da; */
-        border-radius: 0.375rem;
-    }
+.input-group-prepend {
+    width: 21%;
+}
 
-    .input-group-prepend {
-        width: 21%;
-    }
-
-    .country_code_class {
-        position: absolute;
-    }
+.country_code_class {
+    position: absolute;
+}
 
 
-    .image-tab {
-        height: 270px;
-    }
+.image-tab {
+    height: 270px;
+}
 
-    .p_textarea {
-        white-space:pre-line;
-    }
+.p_textarea {
+    white-space:pre-line;
+}
+
+.search-input-group{
+    width: 50% !important;
+}
+
+.add-job-btn{
+    cursor: pointer;
+}
+
+.fa-asterisk{
+    font-size: 9px;
+    position: absolute;
+    color: rgb(255, 0, 0);
+}
+
+.table-responsive .dropdown-menu {
+    position: absolute !important;
+    
+}
+
+.form-theme-label {
+    font-weight: 600;
+}
+.fa-solid {
+    color : var(--theme);
+}
+
+
 
 /* Extra small devices (phones, 600px and down) */
   @media only screen and (max-width: 600px) {
     .navigation-top{
         margin-top: 1rem;
     }
-    .navs {
+    .navs ,.thead {
         font-size: 12px;
     }
 
     .image-tab {
-        height: auto;
-       
+        height: auto;     
+    }
+
+    .search-input-group{
+        width: auto !important;
+    }
+
+    .col-header {
+        width: 160px !important;
     }
 
   }
@@ -147,7 +181,14 @@ select {
   @media only screen and (min-width: 600px) {
     .image-tab {
         height: auto;
-       
+    }
+
+    .search-input-group{
+        width: auto;
+    }
+
+    .col-header {
+        width: 160px !important;
     }
   }
 
@@ -155,22 +196,28 @@ select {
   @media only screen and (min-width: 768px) {
     .image-tab {
         height: auto;
-       
     }
+    .search-input-group{
+        width: auto;
+    }
+
+    .search-input-group{
+        width: auto;
+    }
+
+   
   }
 
   /* Large devices (laptops/desktops, 992px and up) */
   @media only screen and (min-width: 992px) {
     .image-tab {
-        height: 270px;
-       
+        height: 270px;    
     }
   }
 
   /* Extra large devices (large laptops and desktops, 1200px and up) */
   @media only screen and (min-width: 1200px) {
     .image-tab {
-        height: 270px;
-       
+        height: 270px;    
     }
   }

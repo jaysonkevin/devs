@@ -48,6 +48,7 @@ class Handler extends ExceptionHandler
             // return response()->json([
             //     'message' => 'Something went wrong.'
             // ], 404);
+           
         } else{
             return redirect('/');
         }

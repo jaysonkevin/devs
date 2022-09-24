@@ -10,6 +10,10 @@ import 'vue-select/dist/vue-select.css';
 import VueUniversalModal from 'vue-universal-modal'
 import 'vue-universal-modal/dist/index.css'
 
+import VueSweetalert2 from 'vue-sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
+
+//jayson pogi
 const token =  localStorage.getItem('u_t'); 
 window.axios.defaults.baseURL = process.env.MIX_PUBLIC_URL
 window.axios.defaults.withCredentials = true;
@@ -68,7 +72,26 @@ const routes = [
       path : "/model",
       name :"model",
       component: () => import("./routes/pages/model/restricted/Model.vue"),
+    } ,
+    {
+      path : "/joblists",
+      name :"joblists",
+      component: () => import("./JobLists.vue"),
+    } ,
+    {
+      path : "/job/:id",
+      name :"job",
+      component: () => import("./Job.vue"),
+    },
+
+    {
+      path : "/employer/home/applicants",
+      name :"employer/applicants",
+      component: () => import("./routes/pages/employer/restricted/frontend/Applicant.vue")
     }
+
+
+
   ]
 
 
@@ -84,7 +107,7 @@ const routes = [
 let featured = createApp({
 
 })
-
+.use(VueSweetalert2 )
 .use(VueAxios, axios) 
 .use(router)
 .use(store)
@@ -93,7 +116,7 @@ let featured = createApp({
   teleportTarget: '#modals',
 })
 
-
 .mount('#app')
+
 
 

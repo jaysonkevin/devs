@@ -19,9 +19,11 @@ class CreateUserImagesTable extends Migration
             $table->string("image");
             $table->string("file_type" , 50);
             $table->char("status" , 5)->default("A");
+            $table->char("is_profile" , 2)->nullable();
             $table->timestamps();
 
             $table->index(['user_id','status']);
+            $table->index(['is_profile','status']);
         });
     }
 

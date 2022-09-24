@@ -54,22 +54,6 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-6 profile-form">
-                                    <div class="form-outline">
-                                        <label class="form-label control-label">Region</label>
-                                        <Field name="regions" v-model="region">
-                                            <region-select @change="changeRegion($event)" class="flat-input form-control"  :country="userData.country_code"  v-model="region" placeholder="Select Region" :region="userData.region"  />
-                                        </Field>
-                                        
-                                        <Field class="hide"  name="region" v-model="userData.region" >
-
-                                        </Field>
-                                        
-                                        <ErrorMessage class="text-danger errormessage " name="region" />
-                                        
-                                    </div>
-                                    
-                                </div> 
                                 <Field name="next" type="text" id="loginfield_" />
                                 <!-- Submit button -->
                                 <div class="d-grid gap-2 col-md-6">
@@ -113,7 +97,7 @@
                                 .required()
                                 .min("1969-11-13", "Date is too early"),
                 height: yup.number().required().typeError("please enter your height in cm"), 
-                region: yup.string().required().typeError("please select your region/state"),
+               // region: yup.string().required().typeError("please select your region/state"),
                 country: yup.string().required(),
     
              
@@ -164,12 +148,10 @@
                 });
             },
             changeRegion (event) {
-                console.log(event)
+               
                 this.userData.region = event.target.value
             },
           
-          
-     
         } ,
   
         mounted(){

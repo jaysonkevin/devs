@@ -14,7 +14,6 @@ use Illuminate\Http\Request;
 |
 */
 
-
 #PUBLIC ROUTES
 Route::post('login')->name('login.attempt')->uses('Auth\LoginController@login');
 Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
@@ -33,10 +32,22 @@ Route::get('/', function () {
 Route::get('/employer', function () {
     return view('index');
 });
+
+Route::get('/employer/home/applicants', function () {
+    return view('index');
+});
 Route::get('/employer/register', function () {
     return view('index');
 });
 
+Route::get('/joblists', function () {
+    return view('index');
+});
+
+Route::get('/job/{id}', function () {
+  
+    return view('index');
+});
 
 
 
@@ -47,8 +58,6 @@ Route::middleware('auth:sanctum')->get('removetoken', function () {
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-
-
 
 // # AUTHENTICATED LINKS
 Route::group(['middleware'=>['auth:sanctum']] , function(){

@@ -7,20 +7,39 @@ use App\Models\AuthChecker;
 use Helper;
 use Session;
 use Cookie;
+use Storage;
+use App\Models\UserImage;
 use App\Models\EmployerCompany;
+use Stevebauman\Location\Facades\Location;
+
 class AuthCheckerController extends Controller
-{
-    public function index () {
+{   
+
+
+    public function index (Request $request) {
+       
         if(auth()->user()){
             $result = AuthChecker::where("id" ,auth()->user()->id )->first();
-          
+            
+           
+
+            # GET PROFILE IMAGE 
+            $img = UserImage::select("image")->where("user_id" ,auth()->user()->id )->where("is_profile" , 'Y')->where("status" , 'A')->first();
+            if($img){
+                $profile_image =  env('APP_URL').'/storage/photo/'.auth()->user()->folder.'/'.$img->image.'';
+            }  else{
+                # ADD IMAGE PLACEHOLDER
+                 $profile_image  = 'https://www.w3schools.com/howto/img_avatar.png';
+            }
+            
             if($result->type == 'E'){
                 $company = EmployerCompany::where("user_id" ,  $result->id)->first();
                 $c = [
                     "company_name" => (isset($company->company_name)) ?  $company->company_name  : '',
                     "company_display" => (isset($company->company_display)) ?  $company->company_display : '',
                     "company_description" =>  (isset($company->company_description)) ? $company->company_description : '',
-
+                    "company_phone"  => (isset($company->company_phone) ) ? $company->company_phone : NULL,
+                    "company_address"  => (isset($company->company_address) ) ? $company->company_address : NULL
                 ];
             } else{
                 $c = [];
@@ -29,6 +48,7 @@ class AuthCheckerController extends Controller
           
             return response()->json([
                 "u" => array(
+                    "id" => $result->id,
                     "type" => $result->type,
                     "firstname" => $result->firstname,
                     "lastname" => $result->lastname,
@@ -44,6 +64,8 @@ class AuthCheckerController extends Controller
                     "tiktok" =>  ($result->tiktok != null) ? $result->tiktok : 'N/A' ,
                     "user_status" => $result->user_status,
                     "email" => $result->email, 
+                    "profile_image" => $profile_image,
+                   
                 ),
                 "c" => $c
             ]);
@@ -112,10 +134,34 @@ class AuthCheckerController extends Controller
     }
 
     public function logout (Request $request) {
-
         $request->user()->tokens()->delete();
-       
-    
+    }
 
+
+    # GET COUTRY AND REGION BY ID
+    public function location (){
+        
+        // Call this dynamically or use 
+        // $yourUserIpAddress  =  $_SERVER['REMOTE_ADDR'] but only works in server not in local
+        $yourUserIpAddress = '2001:445332:489:ba00:24ba:c59c:8b2e:44f3d';
+
+        $location = Location::get($yourUserIpAddress); 
+     
+        if($location->countryName != ""){
+            return response()->json([
+                "country" =>$location->countryName,
+                "country_code" =>$location->countryCode,
+                "timezone" => $location->timezone
+             ]);
+        } else{
+
+            $location = (unserialize(file_get_contents('http://www.geoplugin.net/php.gp?ip='.$yourUserIpAddress)));
+
+            return response()->json([
+                "country" =>$location['geoplugin_countryName'],
+                "country_code" =>$location['geoplugin_countryCode'],
+                "timezone" => $location['geoplugin_timezone']
+            ]);
+        }
     }
 }

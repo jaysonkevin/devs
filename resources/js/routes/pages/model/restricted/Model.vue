@@ -5,15 +5,24 @@
         <nav class="navbar navbar-expand-md nav-header-theme bg-light fixed-top-nav">
             <div class="container">
                 <a class="navbar-brand" href="#">Freelance Model</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+
+                <div class="container search-container mb-3 mt-2">
+                    <input type="search"  @keyup.enter="searchJob" v-model="searchInput" placeholder="Search Job e.g Tshirt Model" aria-describedby="button-addon2" class="search-form-input">
+                    
+                </div>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#model-header-nav" aria-controls="model-header-nav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
                 </button>
 
-                <div class="collapse navbar-collapse" id="navbarResponsive">
+
+
+                <div class="collapse navbar-collapse" id="model-header-nav">                    
                     <ul class="navbar-nav ms-auto">
-                        <a href="javascript:void(0)" @click="logout" class="btn btn-primary">Logout</a>
+                        <a href="javascript:void(0)" @click="logout" class="">Logout</a>
                     </ul>
                 </div>
+               
             </div>
         </nav>
 
@@ -22,7 +31,18 @@
                 <div class="col-sm-3">
                     <div class="card sm-3">
                         <div class="card-body text-center">
-                            <img src="https://media-exp1.licdn.com/dms/image/C4D03AQEaMaCGTtr-ew/profile-displayphoto-shrink_800_800/0/1654842580507?e=1667433600&v=beta&t=n276FpMWAHDk4B-_2E0yW91xCAC4W9T08BkUB-msGs8" alt="avatar" class="rounded-circle img-fluid" style="width: 150px;"/>
+                            <div class="profile-container">
+                                <img 
+                                        :src="image" 
+                                        alt="avatar" class="rounded-circle profImg img-fluid" style="width: 150px;height: 150px;"/>
+                                    <label for="file-image" class="update-profile"><i class=" fa fa-camera" for="file-image"></i></label>
+                                    <input type="file" name="file" id="file-image" @change="onChange" />
+                                    
+                            </div>
+                            <p v-if="triggerUpload">
+                                <a  href="javascript:void(0)" @click="submitUpload" class="btn btn-theme">save</a>
+                                <a  href="javascript:void(0)" @click="cancelUpload" class="btn btn-danger">cancel</a>
+                            </p>
                             <h5 class="my-3">{{userData.firstname}} <b>{{userData.lastname}}</b></h5>
                             <p class="text-muted mb-1">
                                 <div class="star-rating">
@@ -49,7 +69,7 @@
                                 <li class="list-group-item d-flex justify-content-between align-items-center p-3"><i class="fab fa-facebook-f fa-lg" style="color: rgb(59, 89, 152);"></i><p class="mb-0">{{userData.facebook}} </p></li>
                                 <li class="list-group-item d-flex justify-content-between align-items-center p-3"><i class="fab fa-snapchat fa-lg" style="background-color:yellow"></i><p class="mb-0">{{userData.snapchat}} </p></li>
                                 <li class="list-group-item d-flex justify-content-between align-items-center p-3"><i class="fab fa-tiktok fa-lg" style="background-color:yellow"></i><p class="mb-0">{{userData.tiktok}} </p></li>
-                                <li class="list-group-item d-flex justify-content-between align-items-center p-3"><i class="" style="color: rgb(85, 172, 238);"></i> <p class="mb-0"><i data-bs-toggle="modal" data-bs-target="#social_modal" class="fa fa-pencil" title="edit social media"></i></p></li>
+                                <li  class="list-group-item d-flex justify-content-between align-items-center p-3"><i class="" style="color: rgb(85, 172, 238);"></i> <p class="mb-0 ispointer" data-bs-toggle="modal" data-bs-target="#social_modal">update <i  class="fa-solid  fa-pencil" title="update social media"></i> </p></li>
                             </ul>
                             
                         </div>
@@ -60,13 +80,13 @@
                    <div class=" navigation-top sm-9">
                         <ul class="navs nav-tabs"  role="tablist">
                             <li class="nav-item" role="presentation">
-                                <a class="nav-link  active"  data-bs-toggle="tab" href="#img-tab" role="tab" aria-controls="img-tab" aria-selected="true">Images</a>
+                                <a class="nav-link  active"  data-bs-toggle="tab" href="#img-tab"  role="tab" aria-controls="img-tab" aria-selected="true">Images</a>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <a class="nav-link"  data-bs-toggle="tab" href="#profile-tab" role="tab" aria-controls="profile-tab" aria-selected="false">Profile</a>
+                                <a class="nav-link"  data-bs-toggle="tab" href="#profile-tab"  role="tab" aria-controls="profile-tab" aria-selected="false">Profile</a>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <a class="nav-link"  data-bs-toggle="tab" href="#my-applications" role="tab" aria-controls="#my-applications" aria-selected="false">My Applications</a>
+                                <a class="nav-link"  data-bs-toggle="tab" href="#my-applications"  @click="getMyApplicationClick" role="tab" aria-controls="#my-applications" aria-selected="false">My Applications</a>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <a class="nav-link" data-bs-toggle="tab" href="#saved-jobs" role="tab" aria-controls="saved-jobs" aria-selected="false">Saved Jobs</a>
@@ -79,6 +99,8 @@
                             <ImageTab></ImageTab>
                             <!-- PROFILE -->
                             <ProfileTab @uData="getUserData"></ProfileTab>
+                            <!-- APPLICATION -->
+                            <MyApplication :myApplication="getMyApplication" ></MyApplication>
                         </div>
                    </div>
                 </div>
@@ -150,6 +172,7 @@
 <script>
    
     import ImageTab from './frontend/ImageTab'
+    import MyApplication from './frontend/MyApplication'
     import ProfileTab from './frontend/ProfileTab'
     import { Form, Field, ErrorMessage } from 'vee-validate';
     import * as yup from 'yup';
@@ -157,20 +180,44 @@
         components: {
             ImageTab,
             ProfileTab,
+            MyApplication,
             Form,
             Field,
             ErrorMessage,
+            
             
         },
         data () {
             return {
                 userData : [] ,
-                valid : false
+                valid : false ,
+                searchInput : '',
+                getMyApplication : false ,
+                imgHolder : [],
+                image: '',
+                triggerUpload : false
             }
         },
         methods : {
+            
+            getMyApplicationClick (){
+               
+                this.getMyApplication = true;
+            },
+            searchJob() {
+                if(this.searchInput.trim() != ""){
+                    localStorage.removeItem("_search_");
+                    localStorage.setItem('_search_',this.searchInput.trim()); 
+                     this.$router.push({
+                        path: '/joblists', 
+                    })
+                }
+               
+            },
             getUserData (data) {
                 this.userData = data
+                this.image = data.profile_image;
+            
                 if(data.type == 'E'){
                     location.href = '/employer/home';
                 } else{
@@ -182,7 +229,10 @@
                 if(values.next == undefined) values.next="_next_valid_login_"; values.is_valid_ = false;
 
                 axios.post('api/updateinfosocial',values).then(response => {
-
+                  
+                   if(response.data.has_error == false){
+                    this.$swal("Updated");
+                   }
                 }).catch((error) => {
 
                 });
@@ -194,7 +244,43 @@
                 }).catch((error) => {
 
                 });
-            } 
+            } ,
+
+            onChange(e) {
+                var files = e.target.files;
+                this.imgHolder = files;
+                this.createFile(files[0]);
+
+                this.triggerUpload = true
+            },
+            createFile(file) {
+                if (!file.type.match('image.*')) {
+                    alert('Select an image');
+                return;
+                }
+
+                var img = new Image();
+                var reader = new FileReader();
+                var vm = this;
+                
+                reader.onload = function(e) {
+                vm.image = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            },
+            cancelUpload () {
+                this.image = this.userData.profile_image
+                this.triggerUpload = false;
+            } ,
+            submitUpload (){
+                let data = new FormData();
+                data.append('image', this.imgHolder[0]);
+                data.append('is_profile', 'Y')
+            
+                axios.post('/api/imageUpload',data).then(function (response) {
+                    window.location.reload()
+                });
+            }
         } ,
 
         mounted () {
@@ -205,5 +291,36 @@
 </script>
 
 <style scoped>
+
+
+
+.update-profile {
+    font-size: 20px;
+    position: absolute;
+    visibility: hidden;
+    color: var(--theme);
+    top:40%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    text-align: center;
+    transition: opacity .2s, visibility .2s;
+}
+
+.update-profile {
+   cursor: pointer;
+}
+
+.profile-container:hover .update-profile {
+  visibility: visible;
+}
+
+.profile-container:hover > .profImg {
+    opacity:  0.3;
+}
+
+  
  @import '../../../../../sass/model.scss'; 
+
 </style>

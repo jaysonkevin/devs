@@ -18,6 +18,8 @@ class CreateEmployerCompanyDetails extends Migration
             $table->integer("user_id")->unsigned();
             $table->string("company_name",255);
             $table->string("company_display",255);
+            $table->string("company_phone",255)->nullable();
+            $table->string("company_address",255)->nullable();
             $table->text("company_description");
             $table->char("status" , 5)->default("A");
             $table->timestamps();

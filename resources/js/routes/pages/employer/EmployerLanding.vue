@@ -1,28 +1,7 @@
 <template>
-	<!-- Navigation -->
-	<nav class="navbar navbar-expand-md nav-header-theme bg-light fixed-top-nav">
-		<div class="container">
-			<a class="navbar-brand" href="#">Freelance Model</a>
-			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-			</button>
-			<div class="collapse navbar-collapse" id="navbarResponsive">
-				<ul class="navbar-nav ms-auto">
-					<li class="nav-item active">
-						<router-link class="btn navigations  " to="/">Model</router-link>
-					</li>
-					<li class="nav-item">
-						<router-link class="btn navigations " to="/employer/login">Login</router-link>
-					</li>
-					<li class="nav-item">
-						<router-link class=" btn signup " to="/employer/register">Sign Up</router-link>
-					</li>
-					
-					<router-view/>
-				</ul>
-			</div>
-		</div>
-	</nav>
+
+
+	<HeaderEmployer></HeaderEmployer>
 
     <div class="container-fluid home-view">
 		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -114,25 +93,15 @@
 </template>
 
 <script>
-    
+	import HeaderEmployer from './../HeaderEmployer';
+	export default {
+		components : {
+			HeaderEmployer
+		}
+	}
 </script>
 
 <style scoped>
-	.navigations {
-		text-align: center;
-		cursor: pointer;
-		outline: none;
-		color:var(--bs-black);
-		border: none;
-		text-decoration: none;	
-		margin-right: 1px;	
-	}
-	.navigations:hover {color:var(--theme)}
-	.signup {
-		color: var(--bs-white) !important;
-    	border-color: var(--theme) !important;
-		background-color: var(--theme) !important ;
-	}
 
     .pricing-div {
         margin-bottom: 2rem;

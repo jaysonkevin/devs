@@ -1,0 +1,108 @@
+.job_type {
+    position: relative;
+    display: block;
+    min-height: 1.5rem;
+    padding-left: 1.5rem;
+}
+
+.border-right {
+    border-right: 1px solid #d4d5d6!important;
+}
+
+.hrdivider {
+    display: block;
+}
+
+.list-job{
+    margin: 0px 5px 0px 5px;
+   
+}
+
+.job_description {
+
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;  
+    overflow: hidden;
+    font-family: 'Open Sans',sans-serif;
+    font-size: inherit;
+}
+
+.a_desc {
+    color:black
+}
+
+.a_desc:hover {
+    color:black
+}
+.jobtitle-heading {
+    font-weight: bold;
+    font-family: 'Open Sans',sans-serif; 
+    font-size: inherit;
+}
+
+.jobtitle-heading-small {
+    font-weight: 100;
+    margin-top: -10px;
+    font-style: italic;
+}
+
+h5 {
+    font-weight: 100;
+    font-weight:400;
+}
+
+
+
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+    .list-job{
+       margin-top: 1rem;
+    }
+
+    .card-job{
+        margin-bottom: 1rem;
+    }
+  }
+
+
+
+    .country {
+        font-weight: 600 !important;
+    }
+
+    .fa-solid {
+        color : var(--theme);
+    }
+
+    .search-icon-top{
+        margin-top: 11px;
+        font-size: 20px;
+    }
+
+  /* Small devices (portrait tablets and large phones, 600px and up) */
+  @media only screen and (min-width: 600px) {
+    .list-job{
+        margin-top: 1rem;
+     }
+
+    .card-job{
+        margin-bottom: 1rem;
+    }
+  }
+
+  /* Medium devices (landscape tablets, 768px and up) */
+  @media only screen and (min-width: 768px) {
+   
+  }
+
+  /* Large devices (laptops/desktops, 992px and up) */
+  @media only screen and (min-width: 992px) {
+    
+  }
+
+  /* Extra large devices (large laptops and desktops, 1200px and up) */
+  @media only screen and (min-width: 1200px) {
+   
+  }

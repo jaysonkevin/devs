@@ -6,7 +6,10 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\AuthCheckerController;
 use App\Http\Controllers\UserImageController;
-
+use App\Http\Controllers\EmployerCompanyController;
+use App\Http\Controllers\JobTypeController;
+use App\Http\Controllers\JobController;
+use App\Http\Controllers\JobApplicationController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -22,10 +25,16 @@ use App\Http\Controllers\UserImageController;
 
 Route::post('/register', [RegisterController::class, 'create']);
 Route::get("/country" , [CountryController::class, 'index'] );
-Route::get("/ip" , [CountryController::class, 'getIp'] );
+
+Route::get("/location" , [AuthCheckerController::class, 'location'] );
+
+//Route::get("/ip" , [CountryController::class, 'getIp'] );
 
 
-
+Route::post('activejobs', [ JobController::class, 'activejobs' ]);
+Route::get('job/{id}', [ JobController::class, 'job' ]);
+Route::get('jobType', [ JobTypeController::class, 'index' ]);
+Route::get("session_bearer" , [AuthCheckerController::class , 'session_bearer']);
 
 # PROTECTED ROUTES VIA SANCTUM
 Route::group(['middleware'=>['auth:sanctum']] , function(){
@@ -41,6 +50,20 @@ Route::group(['middleware'=>['auth:sanctum']] , function(){
     Route::post('imageUpload', [ UserImageController::class, 'imageUpload' ]);
     Route::post('logout', [ AuthCheckerController::class, 'logout' ]);
     #END MODEL
+
+
+    # EMPLOYER
+    Route::post('updateCompany', [ EmployerCompanyController::class, 'updateCompany' ]);
+    Route::post('jobs', [ JobController::class, 'index' ]);
+    Route::post('addjob', [ JobController::class, 'addjob' ]);
+    Route::post('editjob', [ JobController::class, 'editjob' ]);
+    Route::post('removejob', [ JobController::class, 'removejob' ]);
+    Route::post('apply', [ JobController::class, 'apply' ]);
+    Route::post('myapplication', [ JobApplicationController::class, 'index' ]);
+    Route::get('newapplicants', [ JobApplicationController::class, 'newapplicants' ]);
+    Route::get('newapplicantsList', [ JobApplicationController::class, 'newapplicantsList' ]);
+    Route::post('applicants', [ JobApplicationController::class, 'applicants' ]);
+    #END EMPLOYER
 });
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

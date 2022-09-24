@@ -136,10 +136,11 @@ trait AuthenticatesUsers
      * @return mixed
      */
     protected function authenticated(Request $request, $user)
-    {
+    {   
        
-        return auth()->user()->createToken($request->email)->plainTextToken;
-
+        return auth()->user()->createToken($request->email)->plainTextToken; // FOR MOBILE API
+       
+        
     }
 
     /**
@@ -181,6 +182,7 @@ trait AuthenticatesUsers
     {   
         $request->session()->invalidate();
         $request->user()->tokens()->delete();
+     
         $this->guard()->logout();
         
         $request->session()->regenerateToken();

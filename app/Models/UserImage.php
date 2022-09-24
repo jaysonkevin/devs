@@ -14,6 +14,7 @@ class UserImage extends Model
     protected $fillable = [
         'user_id',
         'image',
-        'file_type'
+        'file_type',
+        "is_profile"
     ];
 }

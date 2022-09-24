@@ -11,7 +11,7 @@ class UserImageController extends Controller
 {  
 
    public function index () {
-      $result = UserImage::where("user_id" , auth()->user()->id)->get();
+      $result = UserImage::where("user_id" , auth()->user()->id)->whereNull("is_profile")->get();
       if($result){
          foreach ($result as $key => $value) {
             $result[$key]->_p_ = auth()->user()->folder;
@@ -24,7 +24,9 @@ class UserImageController extends Controller
       $request->validate([
          'image.*' => 'mimes:jpeg,png,jpg',
       ]);
-   
+      
+    
+
       $image = $request->file('image');
       $input['imagename'] = time().'.'.$image->extension();
    
@@ -46,12 +48,21 @@ class UserImageController extends Controller
       //Move file to your location 
       Storage::move($input['imagename'], 'public/photo/'.auth()->user()->folder.'/'.$input['imagename']);
 
+      if($request->is_profile != null){
+         $toUpdate = UserImage::where("user_id" , auth()->user()->id)->where("is_profile" , 'Y')->first();
+         if( $toUpdate ){
+            $toUpdate->is_profile = NULL;
+            $toUpdate->save();
+         }
+         
+      }
+
 
       UserImage::create([
          'image' => $input['imagename'],
          'user_id' => auth()->user()->id,
-         'file_type' => $image->getClientOriginalExtension()
-        
+         'file_type' => $image->getClientOriginalExtension(),
+         "is_profile" => ($request->is_profile != null) ? 'Y': NULL
      ]);
 
 

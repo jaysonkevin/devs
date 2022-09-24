@@ -8,7 +8,7 @@
         <title>Software</title>
 
     </head>
-    <body>
+    <body >
        
        <div id="app">
             <router-view></router-view>
