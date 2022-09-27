@@ -1,66 +1,70 @@
 <template>
 
-<nav v-if="uData != null" class="navbar navbar-expand-md nav-header-theme bg-light fixed-top-nav">
-    <div class="container">
-        <router-link :to="'/employer/home/'"  > FREELANCE  </router-link>
-        <div class="nav-data">
-            <a href="#">
-                <i  @click="showNotifs" class="fa-solid px-1 fa-bell  position-relative">
-                    <span class="position-absolute top-0 start-50 translate-middle badge notifnumber rounded-pill bg-danger">{{notif}}</span>
-                    <ul v-if="showNotif_" class="dropdown-menu show notifList" >
-                        
-                            <h5 class="notification-header">Notifications <i class="fa fa-arrow"></i></h5>
-                            <hr class="hr hr-blurry" />
-                            <li class="notif-listing "  v-for="(item , index) in notifList" :key="item" >
-                                <router-link :to="'/employer/home/applicants?notif=true&job=' + item.id"  >
-                                    <div class="txt">
-                                        <b>{{item.applicants}}</b> <span v-if="item.applicants == 1">applicant</span> <span v-else>applicants</span>
-                                        applied to <b>{{item.job_title}}</b>
-                                    </div>
-                                    <div class="txt sub">{{item.created_at}}</div>
-                                </router-link>        
+    <nav v-if="uData != null" class="navbar navbar-expand-md nav-header-theme bg-light fixed-top-nav">
+        <div class="container">
+            <router-link :to="'/employer/home/'"  > FREELANCE  </router-link>
+            <div class="nav-data">
+                <a href="#">
+                    <i v-if="notif >0 "  @click="showNotifs" class="fa-solid px-1 fa-bell  position-relative">
+                        <span class="position-absolute top-0 start-50 translate-middle badge notifnumber rounded-pill bg-danger">{{notif}}</span>
+                        <ul v-if="showNotif_" class="dropdown-menu show notifList" >
+                            
+                                <h5 class="notification-header">Notifications <i class="fa fa-arrow"></i></h5>
                                 <hr class="hr hr-blurry" />
-                            </li> 
-                            <li v-if="pagination.currentPage != pagination.lastPage" class="notif-listing  text-center">
-                                <a href="javascript:void(0);" @click="viewMoreNotif" class="btn btn-xs btn-theme">view more</a>
-                            </li> 
-                       
-                    </ul>
+                                <li class="notif-listing "  v-for="(item , index) in notifList" :key="item" >
+                                    <router-link :to="'/employer/home/applicants?notif=true&job=' + item.id"  >
+                                        <div class="txt">
+                                            <b>{{item.applicants}}</b> <span v-if="item.applicants == 1">applicant</span> <span v-else>applicants</span>
+                                            applied to <b>{{item.job_title}}</b>
+                                        </div>
+                                        <div class="txt sub">{{item.created_at}}</div>
+                                    </router-link>        
+                                    <hr class="hr hr-blurry" />
+                                </li> 
+                                <li v-if="pagination.currentPage != pagination.lastPage" class="notif-listing  text-center">
+                                    <a href="javascript:void(0);" @click="viewMoreNotif" class="btn btn-xs btn-theme">view more</a>
+                                </li> 
+                        
+                        </ul>
+                        <router-view/>
+                    </i>
+                    <i v-else class="fa-solid px-1 fa-bell  position-relative">
+                        <span class="position-absolute top-0 start-50 translate-middle badge notifnumber rounded-pill bg-danger">0</span>
+                    </i>
+                </a>
+            
+                <a class="btn btn-xs" @click="logout"><i class="fa-solid fa-sign-out"  aria-hidden="true"></i> Logout </a>
+            </div>
+        </div>
+    </nav>
+    <!-- Navigation LOGGED OUT -->
+    <nav v-else class="navbar navbar-expand-md nav-header-theme bg-light fixed-top-nav">
+        <div class="container">
+            <a class="navbar-brand" href="#">Freelance Model</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item active">
+                        <router-link class="btn navigations  " to="/">Model</router-link>
+                    </li>
+                    <li class="nav-item">
+                        <router-link class="btn navigations " to="/employer/login">Login</router-link>
+                    </li>
+                    <li class="nav-item">
+                        <router-link class=" btn signup " to="/employer/register">Sign Up</router-link>
+                    </li>
                     <router-view/>
-                </i>
-            </a>
-           
-            <a class="btn btn-xs" @click="logout"><i class="fa-solid fa-sign-out"  aria-hidden="true"></i> Logout </a>
+                </ul>
+            </div>
         </div>
-    </div>
-</nav>
-<!-- Navigation LOGGED OUT -->
-<nav v-else class="navbar navbar-expand-md nav-header-theme bg-light fixed-top-nav">
-    <div class="container">
-        <a class="navbar-brand" href="#">Freelance Model</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item active">
-                    <router-link class="btn navigations  " to="/">Model</router-link>
-                </li>
-                <li class="nav-item">
-                    <router-link class="btn navigations " to="/employer/login">Login</router-link>
-                </li>
-                <li class="nav-item">
-                    <router-link class=" btn signup " to="/employer/register">Sign Up</router-link>
-                </li>
-                <router-view/>
-            </ul>
-        </div>
-    </div>
-</nav>
+    </nav>
 
 </template>
 
 <style>
+   
     .notification-header{
         padding-left:10px;
     }

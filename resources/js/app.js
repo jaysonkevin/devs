@@ -12,6 +12,7 @@ import 'vue-universal-modal/dist/index.css'
 
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
+import Toaster from '@meforma/vue-toaster';
 
 //jayson pogi
 const token =  localStorage.getItem('u_t'); 
@@ -88,6 +89,11 @@ const routes = [
       path : "/employer/home/applicants",
       name :"employer/applicants",
       component: () => import("./routes/pages/employer/restricted/frontend/Applicant.vue")
+    },
+    {
+      path : "/employer/home/model",
+      name :"employer/home/model",
+      component: () => import("./routes/pages/employer/restricted/frontend/ModelApplicant.vue")
     }
 
 
@@ -107,6 +113,9 @@ const routes = [
 let featured = createApp({
 
 })
+.use(Toaster,{
+  position: 'top-right'
+})
 .use(VueSweetalert2 )
 .use(VueAxios, axios) 
 .use(router)
@@ -117,6 +126,8 @@ let featured = createApp({
 })
 
 .mount('#app')
+
+
 
 
 

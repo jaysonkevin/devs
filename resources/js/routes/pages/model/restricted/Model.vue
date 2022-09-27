@@ -1,32 +1,11 @@
 <template>
    
     <section>
-        <!-- Navigation -->
-        <nav class="navbar navbar-expand-md nav-header-theme bg-light fixed-top-nav">
-            <div class="container">
-                <a class="navbar-brand" href="#">Freelance Model</a>
-
-                <div class="container search-container mb-3 mt-2">
-                    <input type="search"  @keyup.enter="searchJob" v-model="searchInput" placeholder="Search Job e.g Tshirt Model" aria-describedby="button-addon2" class="search-form-input">
-                    
-                </div>
-
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#model-header-nav" aria-controls="model-header-nav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-                </button>
-
-
-
-                <div class="collapse navbar-collapse" id="model-header-nav">                    
-                    <ul class="navbar-nav ms-auto">
-                        <a href="javascript:void(0)" @click="logout" class="">Logout</a>
-                    </ul>
-                </div>
-               
-            </div>
-        </nav>
-
+        <HeaderModel :uData="userData"></HeaderModel>
         <div v-if="valid" class="container py-5">
+            <div class="container search-container mb-3 mt-2">
+                <input type="search"  @keyup.enter="searchJob" v-model="searchInput" placeholder="Search Job e.g Tshirt Model" aria-describedby="button-addon2" class="flat-input">
+            </div>
             <div class="row">
                 <div class="col-sm-3">
                     <div class="card sm-3">
@@ -175,6 +154,7 @@
     import MyApplication from './frontend/MyApplication'
     import ProfileTab from './frontend/ProfileTab'
     import { Form, Field, ErrorMessage } from 'vee-validate';
+    import HeaderModel from './../../HeaderModel';
     import * as yup from 'yup';
     export default {
         components: {
@@ -184,7 +164,7 @@
             Form,
             Field,
             ErrorMessage,
-            
+            HeaderModel
             
         },
         data () {
@@ -237,15 +217,6 @@
 
                 });
             },
-            logout () {
-                axios.post('api/logout').then(response => {
-                    localStorage.clear();
-                    location.href = '/';
-                }).catch((error) => {
-
-                });
-            } ,
-
             onChange(e) {
                 var files = e.target.files;
                 this.imgHolder = files;
@@ -291,9 +262,6 @@
 </script>
 
 <style scoped>
-
-
-
 .update-profile {
     font-size: 20px;
     position: absolute;

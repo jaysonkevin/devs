@@ -6,7 +6,17 @@
                 <div class="col-sm-3">
                     <div class="card sm-3">
                         <div class="card-body text-center">
-                            <img src="https://media-exp1.licdn.com/dms/image/C4D03AQEaMaCGTtr-ew/profile-displayphoto-shrink_800_800/0/1654842580507?e=1667433600&v=beta&t=n276FpMWAHDk4B-_2E0yW91xCAC4W9T08BkUB-msGs8" alt="avatar" class="rounded-circle img-fluid" style="width: 150px;"/>
+                            <div class="profile-container">
+                                <img 
+                                        :src="image" 
+                                        alt="avatar" class="rounded-circle profImg img-fluid" style="width: 150px;height: 150px;"/>
+                                    <label for="file-image" class="update-profile"><i class=" fa fa-camera" for="file-image"></i></label>
+                                    <input type="file" name="file" id="file-image" @change="onChange" />
+                            </div>
+                            <p v-if="triggerUpload">
+                                <a  href="javascript:void(0)" @click="submitUpload" class="btn btn-theme">save</a>
+                                <a  href="javascript:void(0)" @click="cancelUpload" class="btn btn-danger">cancel</a>
+                            </p>
                             <p class="text-muted mt-3 mb-1">{{companyData.company_display}}</p>
                             <small>{{userData.firstname}} {{userData.lastname}} </small>
                         </div>
@@ -25,7 +35,7 @@
                                     <li class="list-group-item  justify-content-between align-items-center  p_textarea">
                                         <p class="text-center"><strong>Company Overview</strong></p>
                                         {{companyData.company_description}}</li>
-                                    <li class="list-group-item  justify-content-between align-items-center "  data-bs-toggle="modal" data-bs-target="#company_modal" ><p class="mb-0"><i class="fa-solid fa-pencil" title="edit social media"></i> Edit Company</p></li>
+                                    <li class="list-group-item  justify-content-between align-items-center "  data-bs-toggle="modal" data-bs-target="#company_modal" ><p class="mb-0 editcompany"><i class="fa-solid fa-pencil" title="edit social media"></i> Edit Company</p></li>
                                </ul>
                             </div>
                         </div>
@@ -38,9 +48,9 @@
                                 <a class="nav-link  active"  data-bs-toggle="tab" href="#job-lists" @click="getActiveJobs" role="tab" aria-controls="job-lists" aria-selected="true">Job Ads</a>
                             </li>
                  
-                            <li class="nav-item" role="presentation">
+                            <!-- <li class="nav-item" role="presentation">
                                 <a class="nav-link"  data-bs-toggle="tab" href="#archive" role="tab" @click="getArchiveData" aria-controls="#archive" aria-selected="false">Archived Job Ads</a>
-                            </li>
+                            </li> -->
                             <li class="nav-item" role="presentation">
                                 <a class="nav-link"  data-bs-toggle="tab" href="#currenct_subscription" role="tab" aria-controls="#currenct_subscription" aria-selected="false">Subscription History</a>
                             </li>
@@ -168,7 +178,10 @@
                 companyData : [],
                 schemaCompany,
                 getArchive : false ,
-                getActiveJobsStatus : false
+                getActiveJobsStatus : false,
+                imgHolder : [],
+                image: '',
+                triggerUpload : false
             }
         },
         methods : {
@@ -202,6 +215,41 @@
             getActiveJobs (){   
                 this.getArchive = false;
                 this.getActiveJobsStatus = true;
+            },
+            onChange(e) {
+                var files = e.target.files;
+                this.imgHolder = files;
+                this.createFile(files[0]);
+
+                this.triggerUpload = true
+            },
+            createFile(file) {
+                if (!file.type.match('image.*')) {
+                    alert('Select an image');
+                return;
+                }
+
+                var img = new Image();
+                var reader = new FileReader();
+                var vm = this;
+                
+                reader.onload = function(e) {
+                vm.image = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            },
+            cancelUpload () {
+                this.image = this.userData.profile_image
+                this.triggerUpload = false;
+            } ,
+            submitUpload (){
+                let data = new FormData();
+                data.append('image', this.imgHolder[0]);
+                data.append('is_profile', 'Y')
+            
+                axios.post('/api/imageUpload',data).then(function (response) {
+                    window.location.reload()
+                });
             }
         } ,
 
@@ -214,7 +262,7 @@
                             this.valid = true;
                             this.userData = response.data.u;
                             this.companyData = response.data.c;
-                          
+                            this.image = response.data.u.profile_image;
                        } else {
                             location.href = '/model';
                        }
@@ -227,6 +275,7 @@
     }
 
 </script>
-<style scoped>    
+<style scoped>  
+  
 @import '../../../../../sass/employer.scss'; 
 </style>

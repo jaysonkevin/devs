@@ -63,6 +63,9 @@ Route::group(['middleware'=>['auth:sanctum']] , function(){
     Route::get('newapplicants', [ JobApplicationController::class, 'newapplicants' ]);
     Route::get('newapplicantsList', [ JobApplicationController::class, 'newapplicantsList' ]);
     Route::post('applicants', [ JobApplicationController::class, 'applicants' ]);
+    Route::post('applicant', [ JobApplicationController::class, 'applicant' ]);
+    Route::post('hire', [ JobApplicationController::class, 'hire' ]); 
+    Route::post('rateApplicant', [ JobApplicationController::class, 'rateApplicant' ]); 
     #END EMPLOYER
 });
 

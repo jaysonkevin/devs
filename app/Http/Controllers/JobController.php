@@ -9,8 +9,14 @@ use App\Models\Country;
 use App\Models\JobApplication;
 use Illuminate\Support\Facades\DB;
 use Helper;
+use Carbon\Carbon;
 class JobController extends Controller
-{
+{   
+    public function __construct()
+    {
+       $this->freeLimit = 2;
+    }
+
     public function index (Request $request) {
        
         $result = DB::table("job_ads as ja")->select("ja.created_at","ja.id","jt.id as job_type_id","ja.job_title","ja.job_description","ja.salary","jt.job_type")
@@ -49,6 +55,19 @@ class JobController extends Controller
 
     public function addjob (Request $data){
         Helper::honeypot($data); 
+       
+        #CHECK HOW MANY FREE JOB REMAINING
+        $checkLimitJobFree = Job::where("created_by", auth()->user()->id)
+        ->where("is_purchased" ,'N')
+        ->whereBetween("created_at" , [Carbon::today()->startOfDay() , Carbon::today()->endOfDay()] )->count(); 
+
+        if($checkLimitJobFree == $this->freeLimit){
+            return response()->json([
+                "status" => false,
+                "message" => "Free Limit Exceed",
+            ]);
+        }
+
         $job = Job::create([
             'created_by' => auth()->user()->id,
             'job_title' => $data['job_title'],

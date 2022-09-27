@@ -180,6 +180,7 @@ trait AuthenticatesUsers
      */
     public function logout(Request $request)
     {   
+        $request->user()->currentAccessToken()->delete();
         $request->session()->invalidate();
         $request->user()->tokens()->delete();
      

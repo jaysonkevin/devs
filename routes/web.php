@@ -36,6 +36,10 @@ Route::get('/employer', function () {
 Route::get('/employer/home/applicants', function () {
     return view('index');
 });
+
+Route::get('/employer/home/model', function () {
+    return view('index');
+});
 Route::get('/employer/register', function () {
     return view('index');
 });

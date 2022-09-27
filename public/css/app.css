@@ -21430,6 +21430,10 @@ body {
   color: var(--theme);
 }
 
+.fa-solid-header {
+  color: whitesmoke;
+}
+
 .actionbtn {
   font-size: 9px;
 }
@@ -21560,6 +21564,43 @@ a {
 
 .p_textarea {
   white-space: pre-line;
+}
+
+.update-profile {
+  font-size: 20px;
+  position: absolute;
+  visibility: hidden;
+  color: var(--theme);
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  transition: opacity 0.2s, visibility 0.2s;
+}
+
+.update-profile {
+  cursor: pointer;
+}
+
+.profile-container:hover .update-profile {
+  visibility: visible;
+}
+
+.profile-container:hover > .profImg {
+  opacity: 0.3;
+}
+
+#file-image {
+  visibility: hidden;
+}
+
+.btn-theme:hover {
+  color: white;
+}
+
+.btn-dashboard {
+  font-size: 14px;
+  color: white;
 }
 
 /* Extra small devices (phones, 600px and down) */

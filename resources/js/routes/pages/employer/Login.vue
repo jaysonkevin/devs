@@ -75,8 +75,8 @@
                             this.errorMessage = false;
                             //this.$store.commit("setAuthentication", true);
                             localStorage.setItem('u_t',response.data); 
-                            this.$router.replace({ name: "employer/home" });
-                            
+    
+                            location.href = '/employer/home';
                         }
 
                       

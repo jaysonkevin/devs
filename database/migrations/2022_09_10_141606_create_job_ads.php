@@ -30,6 +30,8 @@ class CreateJobAds extends Migration
             $table->index(['status','is_accepted']);
             $table->index(['status']);
             $table->index(['job_type']);
+            $table->index(['is_purchased']);
+            $table->index(['is_purchased' ,'created_at']);
         });
     }
 

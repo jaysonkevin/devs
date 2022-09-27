@@ -29,14 +29,14 @@
         <table class="table">
             <thead>
                 <tr class="thead">
-                    <th class="col-header" scope="col ">Job Name</th>
+                    <th class="col-header" scope="col ">Job Name </th>
                     <th class="col-header" scope="col">Salary</th>
                     <th class="col-header" scope="col">Applicants</th>
                     <th class="col-header" scope="col">Actions</th>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(item , index) in jobLists" :key="item" :value="item.id"  scope="row">
+                <tr v-if="jobLists.length > 0" v-for="(item , index) in jobLists" :key="item" :value="item.id"  scope="row">
                     <td>
                        <div>
                             <small :class="'badge jt-' + item.job_type_id">{{item.job_type}}</small> 
@@ -61,6 +61,14 @@
                             <li><a class="dropdown-item" href="javascript:void(0);" @click="removeJob(item.id , index)">Remove Job </a></li>
                         </ul>
                         </div>
+                    </td>
+                </tr>
+                <tr v-else class="text-center">
+                    <td colspan="4">
+                        <button class="btn btn-theme text-center mt-2" data-bs-toggle="modal" data-bs-target="#add_job_modal">
+                            Post Your First Ad Job 
+                        </button>
+                       
                     </td>
                 </tr>
                 <router-view/>
@@ -104,12 +112,14 @@
                             <Field class="flat-input" type="number" placeholder="eg. 400"  name="salary"></Field>
                             <ErrorMessage class="text-danger errormessage " name="salary" />
                         </div>
-                       
+                        <div class="text-center">
+                            <span v-if="limitErrorMessage" class="badge bg-danger">Free Daily Limit Post Exceed</span>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-theme">Add Job</button>
-                    </div>
+                    </div>             
                 </Form>
             </div>
         </div>
@@ -245,7 +255,8 @@
                 job_title  :'' ,
                 job_type : [] ,
                 status : 'A'
-              }
+              } ,
+              limitErrorMessage : false
             }
         },
 
@@ -255,7 +266,13 @@
                 if(values.next == undefined) values.next="_next_valid_login_"; values.is_valid_ = false;
 
                 axios.post('api/addjob' , values).then(response => {
-                    
+                    console.log(response.data.status)
+                    if(response.data.status == false){
+                        this.limitErrorMessage = true
+                        return false;
+                    } else{
+                        window.location.reload() 
+                    }
                 }).catch((error) => {
                     
                 });

@@ -1,6 +1,14 @@
 <template>
   	<!-- Navigation -->
-	<nav class="navbar navbar-expand-md nav-header-theme bg-light fixed-top-nav">
+	  <nav v-if="hasLogged" class="navbar navbar-expand-md nav-header-theme bg-light fixed-top-nav">
+		<div class="container">
+			<a class="navbar-brand" href="#">Freelance Model</a>
+			<router-link v-if="userData.type == 'M' " class="btn btn-dashboard btn-theme   " to="/model"> <i class="fa fa-dashboard"></i> Dashboard</router-link>
+			<router-link v-else class="btn  btn-theme btn-dashboard " to="/employer/home"><i class="fa fa-dashboard"></i> Dashboard</router-link>
+			
+		</div>
+	</nav>
+	<nav v-else class="navbar navbar-expand-md nav-header-theme bg-light fixed-top-nav">
 		<div class="container">
 			<a class="navbar-brand" href="#">Freelance Model</a>
 			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,13 +46,13 @@
 				</div>
 				<div class="col-lg-8 col-md-8 col-xs-12 ">
 					<h4 class="home-desc">We help you find your dream job in fashioning.</h4>
-					<p class="home-desc">Make your resume visible to thousands of companies in our job board</p>
 
 					<ul class="list-group" >
 						<li class="list-group-item"><i class='fas fa-check-circle'></i> Free Registration</li>
 						<li class="list-group-item"> <i class='fas fa-check-circle'></i>Complete your profile information</li>
 						<li class="list-group-item"> <i class='fas fa-check-circle'></i> New Job Offers Everyday</li>
-						<li class="list-group-item"> <router-link class=" btn signup " to="/model/register"><i class="fa-solid fa-star"></i> Sign Up Now, and become a model !</router-link></li>
+						<li class="list-group-item"> <i class='fas fa-check-circle'></i> Upload images to your own gallery</li>
+						<li class="list-group-item"> <router-link class=" btn signup " to="/model/register"><i class="fa-regular fa-star"></i> Sign Up Now, and become a model !</router-link></li>
 					</ul>
 					
 					<router-view/>
@@ -57,34 +65,44 @@
 	  
 	<div class="container home home-view2">
 		<h3 class="home-header">Post Job Offers Easily</h3>
-		<div class="container-fluid employer-text">
-			<div class="row align-items-start">
-				<div class="col-4 align-items-start  col-xs-12">
-					<div class="col">
-						<h5> Post Your Vacancy</h5>
-						<p class="p">Create a job post easily. </p>
-					</div>
-					
-				</div>
-				<div class="col-4 col-xs-12 align-items-start">
-					<div class="col">
-						<h5>Check Models Application</h5>
-						<p class="p">Select the best candidates based on your requirements.</p>
-					</div>
-					
-				</div>
-				<div class="col-4 col-xs-12 align-items-start">
-					<div class="col">
-						<h5>Hire Now</h5>  
-						<p class="p">Hire your best candidates to join your company</p>
-					</div>
-				</div>
-				<div class="col-sm-12 mt-3 col-xs-12">
-					<router-link class=" btn signup " to="/employer/register"><i class="fa-solid fa-magnifying-glass"></i> Find A Model Now</router-link>
-				</div>
 
-				<router-view/>
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-4 mb-2">
+					<div class="card">
+						<div class="card-header">
+							<h4>Post Vacancy</h4>
+						</div>
+						<div class="card-body">
+							<p>Create a job post easily.</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-4 mb-2">
+					<div class="card">
+						<div class="card-header">
+							<h4>Check Models Application</h4>
+						</div>
+						<div class="card-body">
+							<p>Select the best candidates based on your requirements.</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-4 mb-2">
+					<div class="card">
+						<div class="card-header">
+							<h4>Hire</h4>
+						</div>
+						<div class="card-body">
+							<p>Hire your best candidates to join your company</p>
+						</div>
+					</div>
+				</div>
 			</div>
+			<div class="col-sm-12 mt-3 col-xs-12">
+				<router-link class=" btn signup " to="/employer/register"><i class="fa fa-magnifying-glass"></i> Find A Model Now</router-link>
+			</div>
+			<router-view/>
 		</div>
 	</div>
 
@@ -97,7 +115,9 @@
   export default {
 	data () {
 		return {
-			currentDate : ''
+			currentDate : '',
+			userData : [] ,
+			hasLogged : false
 		}
 	},
 	components : {
@@ -107,8 +127,16 @@
 		const current = new Date();
 		this.currentDate = current.getFullYear()
 	},
-	created(){
-		
+	beforeCreate(){
+		// get user token
+		axios.get('api/cUL').then(response => {
+			
+			this.userData = response.data.u
+			this.hasLogged  = !this.hasLogged
+		}).catch((error) => {
+			localStorage.clear();
+			this.hasLogged  = false;
+		});
 	}
 }
 </script>

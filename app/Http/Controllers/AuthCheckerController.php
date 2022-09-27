@@ -146,7 +146,6 @@ class AuthCheckerController extends Controller
         $yourUserIpAddress = '2001:445332:489:ba00:24ba:c59c:8b2e:44f3d';
 
         $location = Location::get($yourUserIpAddress); 
-     
         if($location->countryName != ""){
             return response()->json([
                 "country" =>$location->countryName,
