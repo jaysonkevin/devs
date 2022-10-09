@@ -71,9 +71,6 @@ class RegisterController extends Controller
      */
     protected function create(Request $data)
     {   
-
-
-       
         $this->registerValidation($data);
 
         $folder = str_replace(' ', '', strtolower(time().'-'.substr(Hash::make($data['password']), -4))); 
@@ -161,5 +158,31 @@ class RegisterController extends Controller
                 )
             );die;
         }
+    }
+
+    function resendEmailRegistration (Request $request) {
+       $user = User::where("email" , $request->email)->first();
+       if($user){
+            if($user->email_verified_at == null){
+                $user->sendEmailVerificationNotification();
+                return response()->json([
+                  
+                    "status" => true,
+                    'error' => 'Email Sent!'
+                ]);
+            } else{
+                return response()->json([
+                    "status" => false,
+                    "type" => 1,
+                    'error' => 'Already verified'
+                ]);
+            }
+       } else{
+            return response()->json([
+                "status" => false,
+                "type" => 2,
+                'error' => 'Email is not registered'
+            ]);
+       }
     }
 }

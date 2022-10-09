@@ -4,7 +4,7 @@ namespace Illuminate\Foundation\Auth;
 
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Foundation\Http\FormRequest;
-use App\Models\User;
+use Illuminate\Http\Request;
 class EmailVerificationRequest extends FormRequest
 {
     /**
@@ -13,18 +13,14 @@ class EmailVerificationRequest extends FormRequest
      * @return bool
      */
     public function authorize()
-    {   
-       
-
-        $user = User::find($this->route('id'));
-    
+    {
         if (! hash_equals((string) $this->route('id'),
-                          (string) $user->getKey())) {
+                          (string) $this->user()->getKey())) {
             return false;
         }
 
         if (! hash_equals((string) $this->route('hash'),
-                          sha1($user->getEmailForVerification()))) {
+                          sha1($this->user()->getEmailForVerification()))) {
             return false;
         }
 
@@ -50,9 +46,9 @@ class EmailVerificationRequest extends FormRequest
      */
     public function fulfill()
     {   
-        $user = User::find($this->route('id'));
-        if (! $user->hasVerifiedEmail()) {
-            $user->markEmailAsVerified();
+        
+        if (! $this->user()->hasVerifiedEmail()) {
+            $this->user()->markEmailAsVerified();
 
             event(new Verified($this->user()));
         }

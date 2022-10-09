@@ -8,6 +8,13 @@
                 <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
                     <Form class="form" @submit="login" :validation-schema="schema" ref="form"  v-slot="{ isSubmitting }">
                         <span class="badge bg-danger" v-if="errorMessage">Invalid Email or Password</span>
+
+                        <a href="javascript:void(0);" @click="resend">
+                            <span class="badge bg-danger " v-if="notverified" >
+                                Email is not verified click this to resend verification link
+                            </span>
+                        </a>
+
                         <div class="form-outline mb-4">
                             <label class="form-label" for="login-email">Email address</label>
                             <Field name="email" type="email" class="flat-input form-control" placeholder="Email" />
@@ -25,6 +32,8 @@
                         <div class="d-grid gap-2">
                             <button class="btn  mt-3 btn-theme" :disabled="isSubmitting">Login <i v-show="isSubmitting" class="fa fa-spin fa-spinner"></i></button>
                         </div>
+                        <router-link :to="'/forgotpassword/'" >Forgot Password?</router-link>
+                        <router-view/>
                        
                     </Form>
                 </div>
@@ -54,7 +63,9 @@
             return {
                 authenticated : false,
                 schema,
-                errorMessage : false
+                errorMessage : false,
+                notverified  : false,
+                email : ''
                 
             }
         },
@@ -64,19 +75,23 @@
                 if(values.next == '_next_valid_login_') values.is_valid_ =true;
                 if(values.next == undefined) values.next="_next_valid_login_"; values.is_valid_ = false;
                 
-            
+                this.notverified = false;
                 axios.get('/sanctum/csrf-cookie').then(response => {
                     axios.post('/login', values).then(response => {
-                       
+                        
+                        if(response.data.verified == false){
+                            this.notverified = true;
+                            return false
+                        }
                         if(response.data.error !== undefined){
                             this.errorMessage = !this.errorMessage
                             return false
                         } else{
                             this.errorMessage = false;
-                            //this.$store.commit("setAuthentication", true);
                             localStorage.setItem('u_t',response.data); 
-    
+                        
                             location.href = '/employer/home';
+                            
                         }
 
                       
@@ -84,6 +99,21 @@
                 });
                
             } ,
+            resend () {
+                let arr = {
+                    email : this.email
+                }
+                axios.post('api/resendEmailRegistration', arr).then(response => {
+                    if(response.data.type == 1){
+                        this.notverified = false;
+                    }
+
+                    if(response.data.status == true){
+                        this.notverified = false;
+                        this.$toast.success('Please check your email.')   
+                    }
+                }).catch(error => console.log(error)); // credentials didn't match
+            }
            
         },
         mounted () {

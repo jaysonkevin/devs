@@ -13,7 +13,7 @@ import 'vue-universal-modal/dist/index.css'
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 import Toaster from '@meforma/vue-toaster';
-
+import '../js/global'
 //jayson pogi
 const token =  localStorage.getItem('u_t'); 
 window.axios.defaults.baseURL = process.env.MIX_PUBLIC_URL
@@ -33,6 +33,7 @@ const store = new Vuex.Store(
           _user_ : '',
           modalShowPrivacy : false,
           modalShowTerms : false ,
+          responseStatus : false
           
        
       },
@@ -42,7 +43,11 @@ const store = new Vuex.Store(
           },
           setModalPrivacy (state, status) {
             state.modalShowPrivacy = status;
+          },
+          responseStatus (state , status){
+            state.responseStatus = status
           }
+
 
       }
   }
@@ -94,8 +99,24 @@ const routes = [
       path : "/employer/home/model",
       name :"employer/home/model",
       component: () => import("./routes/pages/employer/restricted/frontend/ModelApplicant.vue")
-    }
+    },
 
+    {
+      path : "/model/notification/:id",
+      name :"model/notification",
+      component: () => import("./routes/pages/model/restricted/Notification.vue")
+    },
+    {
+      path : "/forgotpassword",
+      name :"forgotpassword",
+      component: () => import("./components/ForgotPassword.vue")
+    }
+    ,
+    {
+      path : "/reset/:token/:email",
+      name :"reset",
+      component: () => import("./components/ResetPasswordForm.vue")
+    }
 
 
   ]

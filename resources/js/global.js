@@ -1,4 +1,9 @@
 export default {
+    data(){
+        return {
+            responseData : ''
+        }
+    },
     methods : {
         hire (id , job_id){
             var arr = {
@@ -23,6 +28,25 @@ export default {
             }).catch((error) => {
 
             });
-        }
+        } ,
+
+        async rate_description (rate_description , id , job_id) {
+            var arr = {
+                rate_description : rate_description ,
+                job_id : job_id,
+                id : id
+            }     
+            
+    
+           
+           await axios.post('api/rate_description',arr).then(response => {
+                this.responseData = response.data
+            }).catch((error) => {
+
+            });
+
+            return (this.responseData)
+        },
+     
     }
 }

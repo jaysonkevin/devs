@@ -24,7 +24,5 @@ class Registered
     public function __construct($user)
     {
         $this->user = $user;
-        //event(new Registered($user));
-       
     }
 }

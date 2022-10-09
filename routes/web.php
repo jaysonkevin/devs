@@ -1,8 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
+
 use Illuminate\Http\Request;
+use Illuminate\Auth\Events\Verified;
+use App\Models\User;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,11 +17,34 @@ use Illuminate\Http\Request;
 */
 
 #PUBLIC ROUTES
+
 Route::post('login')->name('login.attempt')->uses('Auth\LoginController@login');
-Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-    $request->fulfill();
-    return redirect('/');
-})->middleware(['signed'])->name('verification.verify');
+Route::get('/email/verify/{id}/{hash}',function($request){
+    $user = User::where("id", $request)->first();
+
+    if (! $user->hasVerifiedEmail()) {
+        $user->markEmailAsVerified();
+        
+        event(new Verified($user));
+        if($user->type =="M"){
+            return redirect('model/login');
+        } else{
+            return redirect('employer/login');
+        }
+    }
+});
+
+Route::get("forgotpassword", function(){
+    return view('index');
+});
+
+Route::get("reset/{token}/{email}" , function($token , $email){   
+    return view('index');
+});
+
+Route::get('password/reset/{token}', [ForgotPasswordController::class,'showLinkRequestForm']);
+
+
 Route::get('/model/register', function () {
     return view('index');
 });
@@ -65,6 +90,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // # AUTHENTICATED LINKS
 Route::group(['middleware'=>['auth:sanctum']] , function(){
+
+    Route::get('/model/notification/{id}', function () {
+        return view('index');
+    });
 
     Route::get('/{any}', function () {
         return view('index');

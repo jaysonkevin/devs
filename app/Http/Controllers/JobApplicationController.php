@@ -8,6 +8,7 @@ use App\Models\UserImage;
 use App\Models\Job; 
 use App\Models\AuthChecker;
 use App\Models\User;
+use App\Models\ModelNotification;
 use DB;
 use Carbon\Carbon;
 class JobApplicationController extends Controller
@@ -101,7 +102,7 @@ class JobApplicationController extends Controller
         
         if($job_details){
             $applicant_lists =  DB::table("job_application as jap")
-                                ->select("u.firstname" , "u.lastname" ,"u.country_code","u.folder",'u.id',"is_hired", "rating")
+                                ->select("u.firstname" , "u.lastname" ,"u.country_code","u.folder",'u.id',"is_hired", "rating" , "rating_description")
                                 ->join("users as u" , 'u.id' , '='  , 'jap.user_id')
                                 ->where("jap.job_id" , $request->job)
                                 ->orderBy("jap.id",'ASC')
@@ -238,6 +239,9 @@ class JobApplicationController extends Controller
         if($result){
             $result->rating =  $request->rating;
             $result->save();
+
+            # ADD NOTIFICATION ON MODEL
+            $this->modelNotificationRating($request->id , $result->rating , false );
         } else{
             abort("404");
         }
@@ -247,4 +251,63 @@ class JobApplicationController extends Controller
             "status" => true 
         ]);
     }
+    public function rate_description (Request $request) {
+         #CHECK IF ITS YOUR OWN JOB POST
+         $check = Job::where("created_by" , auth()->user()->id)->where("id" , $request->job_id)->first();
+         if(!$check){
+            return response()->json([
+                "status" => false 
+            ]);
+         }
+         
+         #CHECK IF USER IS ON JOB ID 
+         $result  = JobApplication::where("job_id",$request->job_id)->where("user_id", $request->id)->first();
+         if($result){
+            $string = preg_replace('/\s+/', '', $request->rate_description);
+          
+            if(strlen($string) > 150){
+                return response()->json([
+                    "status" => false 
+                ]);
+            }
+            $result->rating_description =  $request->rate_description;
+            $result->save();
+
+            # ADD NOTIFICATION ON MODEL
+            $this->modelNotificationRating($request->id  ,false , $result->rating_description );
+            return response()->json([
+                "status" => true 
+            ]);
+         } else{
+            return response()->json([
+                "status" => false 
+            ]);
+         }
+        
+         return response()->json([
+             "status" => true 
+         ]);
+    }
+
+    public function modelNotificationRating ($user_id , $rating = false , $rating_description = false) {
+         #CHECK IF MDEOL HAS A RATING DATA  
+         $result  = ModelNotification::where("user_id",$user_id)->where("rated_by", auth()->user()->id)->first();
+         if($result != null){
+            if($rating != false){
+                $result->rating = $rating;
+            }
+            if($rating_description != false){
+                $result->rating_description = $rating_description;
+            }
+
+            $result->save();
+         } else {
+            ModelNotification::create([
+                'user_id' => $user_id,
+                'rated_by' => auth()->user()->id , 
+                'rating' => $rating,
+                'rating_description' => NULL
+            ]);
+         }
+    } 
 }

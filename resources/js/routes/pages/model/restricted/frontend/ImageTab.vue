@@ -11,11 +11,14 @@
             <div class="row">
                 <div class="col-md-4 col-xs-4" v-for="(item, index) in imagesHolder">
                     <div class="card img-card">
+                        <div class="card-header">
+                           <span @click="removeImg(item.id , index)" style="cursor:pointer"> <i class="fa fa-trash"  style="color:red"></i> Remove </span>
+                        </div>
                         <div class="card-body"  >
                             <img
                                 @click="showImg('../storage/photo/'+item._p_+'/'+item.image)"
                                 :src="'../storage/photo/'+item._p_+'/'+item.image"
-                                class="img-fluid image-tab"
+                                class="img-fluid image-tab gallery"
                                 data-bs-toggle="modal" data-bs-target="#imgModal"
                                 />
                         </div>
@@ -133,6 +136,56 @@
                 axios.post('/api/imageUpload',data).then(function (response) {
                     window.location.reload()
                 });
+            },
+            removeImg (id , index) {
+                let imgH  = this.imagesHolder
+                var me = this;
+                this.$swal({
+                    title: "Are you sure you want to delete this image?",
+                    text: "",
+                    type: "warning",
+                    showCancelButton: true,
+                    cancelButtonText: "Cancel",
+                    cancelButtonColor: 'grey',
+                    confirmButtonColor: "red",
+                    confirmButtonText: "Delete"
+                }).then(function(result){
+                   if(result.isConfirmed){      
+                        axios.post('api/removeImg' , {id : id}).then(response => {
+                            if(response.data.status == true){
+                                me.$swal({
+                                    title: "",
+                                    text: "Success!",
+                                    iconHtml: '<i class="fa-solid fa-check" style="color:green"></i>',
+                                    type: "success",
+                                    showCancelButton: false,
+                                    showConfirmButton : false,
+                                    timer: 1500
+                                });
+                                imgH.splice(index, 1)
+                            } else{
+                                me.$swal({
+                                    title: "",
+                                    text: "Something went wrong!",
+                                    iconHtml: '<i style="color:red" class="fa">&#xf12a;</i>',
+                                    type: "error",
+                                    showCancelButton: false,
+                                    showConfirmButton : false,
+                                    timer: 1500
+                                });
+                            }
+                        }).catch((error) => {
+                            
+                        });
+                   }
+                }, function(result) {
+                    // dismiss can be 'overlay', 'cancel', 'close', 'esc', 'timer'
+                    if (result.dismiss === 'cancel') { // you might also handle 'close' or 'timer' if you used those
+                       
+                    } else {
+                        throw dismiss;
+                    }
+                })
             }
                 
         },

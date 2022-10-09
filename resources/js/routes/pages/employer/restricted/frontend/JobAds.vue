@@ -299,7 +299,7 @@
                 var me = this;
                 this.$swal({
                     title: "Are you sure you want to remove this job?",
-                    text: "You can still view it on the archive tab",
+                    text: "",
                     type: "warning",
                     showCancelButton: true,
                     cancelButtonText: "Cancel",

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Helper;
 use Session;
+use App\Models\User;
 
 trait AuthenticatesUsers
 {
@@ -32,7 +33,9 @@ trait AuthenticatesUsers
      * @throws \Illuminate\Validation\ValidationException
      */
     public function login(Request $request)
-    {
+    {   
+
+       
         $this->validateLogin($request);
 
         // If the class is using the ThrottlesLogins trait, we can automatically throttle
@@ -85,9 +88,20 @@ trait AuthenticatesUsers
      */
     protected function attemptLogin(Request $request)
     {   
-        
        
-        Helper::honeypot($request);   
+        Helper::honeypot($request); 
+        
+        # CHECK IF EMAIL IS VERIFIED
+        $verified = User::select("email_verified_at")->where("email" , $request->email)->first();
+       
+        if($verified->email_verified_at == null || $verified->email_verified_at == NULL ){
+           
+            echo json_encode([
+                "verified" => false,
+                "error"=> "Something went wrong!"
+            ]);
+            die;
+        } 
         return $this->guard()->attempt(
             
             $this->credentials($request), $request->boolean('remember')
@@ -155,6 +169,7 @@ trait AuthenticatesUsers
     {   
 
         return response()->json([
+            "verified" => true,
             'error' => 'Invalid Email or Password'
         ]);
         // throw ValidationException::withMessages([
@@ -181,8 +196,10 @@ trait AuthenticatesUsers
     public function logout(Request $request)
     {   
         $request->user()->currentAccessToken()->delete();
-        $request->session()->invalidate();
+        $request->session()->invalidate();+
+        auth()->user()->tokens()->delete();
         $request->user()->tokens()->delete();
+        
      
         $this->guard()->logout();
         

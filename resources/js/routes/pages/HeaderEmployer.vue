@@ -154,6 +154,12 @@
         border-radius: 5px
     }
 
+   
+    a.btn.btn-xs:hover {
+        background: #F5F5F5 !important;
+        border-color:var(--theme) !important;
+    }
+
 
 </style>
 
@@ -172,6 +178,14 @@
 			}
 		},
         methods : {
+            logout () {
+                axios.post('api/logout').then(response => {
+                    localStorage.clear();
+                    location.href = '/';
+                }).catch((error) => {
+
+                });
+            } ,
             showNotifs () {
                 this.showNotif_ = !this.showNotif_ 
                 if(this.notif > 0){

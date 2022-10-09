@@ -24,23 +24,24 @@
                             </p>
                             <h5 class="my-3">{{userData.firstname}} <b>{{userData.lastname}}</b></h5>
                             <p class="text-muted mb-1">
-                                <div class="star-rating">
-                                    <span class="fa fa-star" data-rating="1"></span>
-                                    <span class="fa fa-star" data-rating="2"></span>
-                                    <span class="fa fa-star" data-rating="3"></span>
-                                    <span class="fa fa-star" data-rating="4"></span>
-                                    <span class="fa fa-star" data-rating="5"></span>
-                                    <input type="hidden" name="rating_percentage" class="rating-value" value="2.56">
-                                </div>
-
+                                <StarRating 
+                                        v-bind:show-rating= false
+                                        active-color="#42b883"
+                                        v-bind:star-size="4"
+                                        :rating="userData.averageRating"
+                                        :round-start-rating="false"
+                                        :read-only=true
+                                ></StarRating>
                             </p>
+                            <br/>
+
                            
                         </div>
                     </div>
 
                     <div class="card  mt-2 toggle ">
                         <div class="card-body" id="social-toggle">
-                            <h5 class="my-3">Social Links</h5>
+                            <h5 class="my-3">Social Links {{getRatingsData}}</h5>
                         
                             <ul class="list-group list-group-flush rounded-3">
                                 <li class="list-group-item d-flex justify-content-between align-items-center p-3"><i class="fab fa-twitter fa-lg" style="color: rgb(85, 172, 238);"></i><p class="mb-0"> {{userData.twitter}}</p></li>
@@ -68,7 +69,7 @@
                                 <a class="nav-link"  data-bs-toggle="tab" href="#my-applications"  @click="getMyApplicationClick" role="tab" aria-controls="#my-applications" aria-selected="false">My Applications</a>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <a class="nav-link" data-bs-toggle="tab" href="#saved-jobs" role="tab" aria-controls="saved-jobs" aria-selected="false">Saved Jobs</a>
+                                <a class="nav-link" data-bs-toggle="tab" href="#ratings-tab" role="tab"  @click="getRatingsDataClick" aria-controls="saved-jobs" aria-selected="false">Ratings</a>
                             </li>
                         </ul>
                    </div>
@@ -80,6 +81,8 @@
                             <ProfileTab @uData="getUserData"></ProfileTab>
                             <!-- APPLICATION -->
                             <MyApplication :myApplication="getMyApplication" ></MyApplication>
+                            <!-- RATINGS -->
+                            <Ratings :userId="userData.id" :getRatingsData="getRatingsData"></Ratings>
                         </div>
                    </div>
                 </div>
@@ -93,6 +96,7 @@
             </div>
             <ProfileTab @uData="getUserData"></ProfileTab>
         </div>
+        
     </section>
 
     <!-- MODALS -->
@@ -155,6 +159,8 @@
     import ProfileTab from './frontend/ProfileTab'
     import { Form, Field, ErrorMessage } from 'vee-validate';
     import HeaderModel from './../../HeaderModel';
+    import StarRating from 'vue-star-rating'
+    import Ratings from './frontend/Ratings'
     import * as yup from 'yup';
     export default {
         components: {
@@ -164,8 +170,9 @@
             Form,
             Field,
             ErrorMessage,
-            HeaderModel
-            
+            HeaderModel,
+            StarRating,
+            Ratings            
         },
         data () {
             return {
@@ -175,7 +182,8 @@
                 getMyApplication : false ,
                 imgHolder : [],
                 image: '',
-                triggerUpload : false
+                triggerUpload : false,
+                getRatingsData : false
             }
         },
         methods : {
@@ -184,6 +192,11 @@
                
                 this.getMyApplication = true;
             },
+
+            getRatingsDataClick (){
+              
+               this.getRatingsData = true;
+           },
             searchJob() {
                 if(this.searchInput.trim() != ""){
                     localStorage.removeItem("_search_");
@@ -262,6 +275,8 @@
 </script>
 
 <style scoped>
+
+
 .update-profile {
     font-size: 20px;
     position: absolute;
@@ -290,5 +305,9 @@
 
   
  @import '../../../../../sass/model.scss'; 
+
+ .vue-star-rating {
+    display: inline-block !important;
+ }
 
 </style>

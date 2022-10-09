@@ -11,10 +11,31 @@ use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules;
 use Illuminate\Validation\ValidationException;
-
+use App\Models\User as User;
 trait ResetsPasswords
 {
     use RedirectsUsers;
+
+    // check token if expired or not
+    public function checkResetToken (Request $request) {
+        $user = User::where("email" , $request->email)->first();
+        $credentials =  $request->only('email', 'token');
+        if (is_null($user = $this->broker()->getUser($credentials))) {
+            return response()->json([
+                "has_error" => true,
+                "error_type" => 1,
+                "message" => "Invalid User"
+            ]);
+        }
+
+        if (! $this->broker()->tokenExists($user, $request->token)) {
+            return response()->json([
+                "has_error" => true,
+                "error_type" => 2,
+                "message" => "Invalid Token or Expired"
+            ]);
+        }
+    }
 
     /**
      * Display the password reset view for the given token.
@@ -40,7 +61,8 @@ trait ResetsPasswords
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
      */
     public function reset(Request $request)
-    {
+    {   
+        
         $request->validate($this->rules(), $this->validationErrorMessages());
 
         // Here we will attempt to reset the user's password. If it is successful we
@@ -51,7 +73,17 @@ trait ResetsPasswords
                 $this->resetPassword($user, $password);
             }
         );
-
+        if($response == Password::PASSWORD_RESET){
+            return response()->json([
+                "has_error"=> false
+            ]);
+        } else{
+            return response()->json([
+                "has_error" => true,
+                "error_type" => 1,
+                "message" => "Something went wrong!"
+            ]);
+        }
         // If the password was successfully reset, we will redirect the user back to
         // the application's home authenticated view. If there is an error we can
         // redirect them back to where they came from with their error message.
@@ -105,13 +137,14 @@ trait ResetsPasswords
      * @return void
      */
     protected function resetPassword($user, $password)
-    {
+    {   
+        
         $this->setUserPassword($user, $password);
 
         $user->setRememberToken(Str::random(60));
 
         $user->save();
-
+       
         event(new PasswordReset($user));
 
         $this->guard()->login($user);

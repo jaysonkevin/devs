@@ -11,7 +11,7 @@ class UserImageController extends Controller
 {  
 
    public function index () {
-      $result = UserImage::where("user_id" , auth()->user()->id)->whereNull("is_profile")->get();
+      $result = UserImage::where("user_id" , auth()->user()->id)->where("status" , 'A')->whereNull("is_profile")->get();
       if($result){
          foreach ($result as $key => $value) {
             $result[$key]->_p_ = auth()->user()->folder;
@@ -66,5 +66,24 @@ class UserImageController extends Controller
      ]);
 
 
+   }
+
+   public function removeImg (Request $request){
+      # CHECK IF USER OWN THE IMAGE ID 
+      $check = UserImage::select("image","status","id")->where("id" , $request->id)->where("user_id" , auth()->user()->id)->first();
+      if($check == null){
+         return response()->json([
+            "status" => false,
+            "message" => "Error!"
+         ]);
+      }
+     
+      $check->status = 'H';
+      $check->save();
+      
+      return response()->json([
+         "status" => true,
+         "message" => "Deleted!"
+      ]);
    }
 }

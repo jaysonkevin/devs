@@ -117,6 +117,7 @@
                 applicant_lists : [] ,
                 job_details : [],
                 rating: '' ,
+                rate_description : ''
                 
 
             }
@@ -173,11 +174,70 @@
                this.rating = rating 
             },
             rateApplicant (id) {
+                let swal = this.$swal;
+                let toast = this.$toast;
+                let thisClass= this;
+                let route = this.$route;
                 Global.methods.rateApplicant(this.rating , id , this.$route.query.job);  
-                this.$toast.success('Ratings Saved.', {
-                    // optional options Object
-                })               
-            } ,     
+                this.$toast.success('Ratings Saved.')   
+
+                swal({
+                    title: "Add Model Review!",
+                    type: "warning",
+                    text : "",
+                    html : `Maximum of 150 characters<textarea id="rate_description"  maxlength="150"  class="form-control">`,
+                    showCancelButton: true,
+                    cancelButtonText: "No Thanks",
+                    cancelButtonColor: 'grey',
+                    confirmButtonColor: "green",
+                    confirmButtonText: "Submit",
+                    preConfirm: () => {
+                        let rate_description =  document.getElementById("rate_description").value
+                        var withoutSpace = rate_description.replace(/ /g,"");
+                        
+                        if(withoutSpace.length > 150){
+                            toast.error('150 characters only!.',{
+                                position: "top",
+                            })  
+                            return false;
+                        }
+                    },
+                }).then(function(result){
+                   if(result.isConfirmed){      
+                    let rate_description =  document.getElementById("rate_description").value
+                    let res = Global.methods.rate_description(rate_description, id , route.query.job)
+                    
+                    res.then(function(data){
+                        if(data.status == false){
+                            toast.error('Something went wrong.',{
+                                position: "top",
+                            })  
+                            
+                        } else{
+
+                            toast.success('Saved!',{
+                                position: "top",
+                            })   
+                        }
+                    })
+
+                   }
+                }, function(result) {
+                    // dismiss can be 'overlay', 'cancel', 'close', 'esc', 'timer'
+                    if (result.dismiss === 'cancel') { 
+                       
+                    } else {
+                    throw dismiss;
+                    }
+                })   
+
+            } ,    
+            
+            mounted(){
+                document.getElementById('rate_description').onkeyup = function () {
+                document.getElementById('rating_desc_count').innerHTML = "Characters left: " + (150 - this.value.length);
+                };
+            }
            
         }
     }

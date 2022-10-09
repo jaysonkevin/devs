@@ -21592,6 +21592,7 @@ a {
 
 #file-image {
   visibility: hidden;
+  position: relative !important;
 }
 
 .btn-theme:hover {
@@ -21638,6 +21639,6 @@ a {
 /* Extra large devices (large laptops and desktops, 1200px and up) */
 @media only screen and (min-width: 1200px) {
   .search-container {
-    width: 25% !important;
+    width: 40% !important;
   }
 }

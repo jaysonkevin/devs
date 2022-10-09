@@ -440,7 +440,7 @@ class UrlGenerator implements UrlGeneratorContract
         if (! is_null($route = $this->routes->getByName($name))) {
             return $this->toRoute($route, $parameters, $absolute);
         }
-        abort("500");
+
         throw new RouteNotFoundException("Route [{$name}] not defined.");
     }
 

@@ -19,6 +19,7 @@ class CreateJobApplication extends Migration
             $table->integer('job_id')->length(11)->unsigned();
             $table->char('is_hired',3)->default('N')->comment("employer can mark as hired or not"); 
             $table->tinyInteger('rating')->unsigned()->nullable()->comment("scale of 1 to 5");
+            $table->string('rating_description', 255)->nullable();
             $table->tinyInteger('employer_notif')->unsigned()->nullable()->comment("1 IF SEEN , NULL IF UNSEEN");    
             $table->timestamps();
 

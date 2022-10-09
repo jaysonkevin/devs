@@ -11,6 +11,7 @@ use Storage;
 use App\Models\UserImage;
 use App\Models\EmployerCompany;
 use Stevebauman\Location\Facades\Location;
+use App\Models\ModelNotification;
 
 class AuthCheckerController extends Controller
 {   
@@ -45,6 +46,15 @@ class AuthCheckerController extends Controller
                 $c = [];
             }
 
+            $model_rating_count = ModelNotification::select("rating")->where("user_id" ,auth()->user()->id)->count();
+            if($model_rating_count > 0 ){
+                $model_rating_total = ModelNotification::select("rating")->where("user_id" ,auth()->user()->id)->sum("rating");
+
+                $averageRating = $model_rating_total /$model_rating_count;
+
+            } else{
+                $averageRating = 0;
+            }
           
             return response()->json([
                 "u" => array(
@@ -65,6 +75,7 @@ class AuthCheckerController extends Controller
                     "user_status" => $result->user_status,
                     "email" => $result->email, 
                     "profile_image" => $profile_image,
+                    "averageRating" => $averageRating
                    
                 ),
                 "c" => $c

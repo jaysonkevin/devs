@@ -61,7 +61,7 @@ class PasswordBroker implements PasswordBrokerContract
         }
 
         $token = $this->tokens->create($user);
-
+       
         if ($callback) {
             $callback($user, $token);
         } else {

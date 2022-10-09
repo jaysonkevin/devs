@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\AuthCheckerController;
 use App\Http\Controllers\UserImageController;
@@ -10,6 +12,8 @@ use App\Http\Controllers\EmployerCompanyController;
 use App\Http\Controllers\JobTypeController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\JobApplicationController;
+use App\Http\Controllers\ModelNotificationController;
+use Illuminate\Support\Facades\Password;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -22,8 +26,14 @@ use App\Http\Controllers\JobApplicationController;
 */
 
 # PUBLIC ROUTES 
+Route::post('/resetpassword' , [ForgotPasswordController::class,'sendResetLinkEmail']);
+Route::post('/reset-password'  , [ResetPasswordController::class,'reset']);
+
+# CHECK IF TOKEN IS EXPIRED OR NOT
+Route::post("checkResetToken" , [ResetPasswordController::class,'checkResetToken']);
 
 Route::post('/register', [RegisterController::class, 'create']);
+Route::post('/resendEmailRegistration', [RegisterController::class, 'resendEmailRegistration']);
 Route::get("/country" , [CountryController::class, 'index'] );
 
 Route::get("/location" , [AuthCheckerController::class, 'location'] );
@@ -48,7 +58,11 @@ Route::group(['middleware'=>['auth:sanctum']] , function(){
     Route::post("/updateinfosocial" , [AuthCheckerController::class, 'updateinfosocial'] );
     Route::get("/getImage" , [UserImageController::class, 'index'] );
     Route::post('imageUpload', [ UserImageController::class, 'imageUpload' ]);
-    Route::post('logout', [ AuthCheckerController::class, 'logout' ]);
+    Route::post('logout', [ AuthCheckerController::class, 'logout' ]);  
+    Route::get('mNotification', [ ModelNotificationController::class, 'index' ]);  
+    Route::get('getNotifListM', [ ModelNotificationController::class, 'getNotifListM' ]);  
+    Route::post('getRatingsData', [ ModelNotificationController::class, 'getRatingsData' ]);  
+    Route::post('removeImg', [ UserImageController::class, 'removeImg' ]); 
     #END MODEL
 
 
@@ -65,7 +79,8 @@ Route::group(['middleware'=>['auth:sanctum']] , function(){
     Route::post('applicants', [ JobApplicationController::class, 'applicants' ]);
     Route::post('applicant', [ JobApplicationController::class, 'applicant' ]);
     Route::post('hire', [ JobApplicationController::class, 'hire' ]); 
-    Route::post('rateApplicant', [ JobApplicationController::class, 'rateApplicant' ]); 
+    Route::post('rateApplicant', [ JobApplicationController::class, 'rateApplicant' ]);   
+    Route::post('rate_description', [ JobApplicationController::class, 'rate_description' ]);
     #END EMPLOYER
 });
 

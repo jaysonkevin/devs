@@ -60,11 +60,12 @@ class VerifyEmail extends Notification
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     protected function buildMailMessage($url)
-    {
+    {   
+
         return (new MailMessage)
             ->subject(Lang::get('Verify Email Address'))
             ->line(Lang::get('Please click the button below to verify your email address.'))
-            ->action(Lang::get('Verify Email Address'), $url)
+            ->action(Lang::get('Verify Email Address'),  env("APP_URL").'/email/verify/'.$url['id'].'/'.$url['hash'])
             ->line(Lang::get('If you did not create an account, no further action is required.'));
     }
 
@@ -79,15 +80,17 @@ class VerifyEmail extends Notification
         if (static::$createUrlCallback) {
             return call_user_func(static::$createUrlCallback, $notifiable);
         }
-
-        return URL::temporarySignedRoute(
-            'verification.verify',
-            Carbon::now()->addMinutes(Config::get('auth.verification.expire', 60)),
-            [
-                'id' => $notifiable->getKey(),
-                'hash' => sha1($notifiable->getEmailForVerification()),
-            ]
-        );
+        return [
+            'id' => $notifiable->getKey(),
+            'hash' => sha1($notifiable->getEmailForVerification()),
+        ];
+        // return URL::temporarySignedRoute(
+        //     Carbon::now()->addMinutes(Config::get('auth.verification.expire', 60)),
+        //     [
+        //         'id' => $notifiable->getKey(),
+        //         'hash' => sha1($notifiable->getEmailForVerification()),
+        //     ]
+        // );
     }
 
     /**

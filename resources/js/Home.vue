@@ -64,24 +64,24 @@
 	
 	  
 	<div class="container home home-view2">
-		<h3 class="home-header">Post Job Offers Easily</h3>
+		<h3 class="home-header">Post Job Offers Easily And Free</h3>
 
-		<div class="container">
-			<div class="row">
+		<div class="container container-employer">
+			<div class="row flex-nowrap">
 				<div class="col-sm-4 mb-2">
-					<div class="card">
+					<div class="card emp-col">
 						<div class="card-header">
-							<h4>Post Vacancy</h4>
+							<h4> <i class="fa-solid fa-thumbtack"></i> Post Vacancy</h4>
 						</div>
 						<div class="card-body">
-							<p>Create a job post easily.</p>
+							<p>Create a job post easily for <b>FREE</b></p>
 						</div>
 					</div>
 				</div>
 				<div class="col-sm-4 mb-2">
-					<div class="card">
+					<div class="card emp-col">
 						<div class="card-header">
-							<h4>Check Models Application</h4>
+							<h4> <i class="fa-solid fa-user-check"></i> Check Models Application</h4>
 						</div>
 						<div class="card-body">
 							<p>Select the best candidates based on your requirements.</p>
@@ -89,9 +89,9 @@
 					</div>
 				</div>
 				<div class="col-sm-4 mb-2">
-					<div class="card">
+					<div class="card emp-col">
 						<div class="card-header">
-							<h4>Hire</h4>
+							<h4> <i class="fa-solid fa-star"></i> Hire</h4>
 						</div>
 						<div class="card-body">
 							<p>Hire your best candidates to join your company</p>
@@ -142,6 +142,17 @@
 </script>
 
 <style scoped>
+.emp-col {
+	height: 150px;
+}
+
+.card-header {
+    padding: var(--bs-card-cap-padding-y) var(--bs-card-cap-padding-x);
+    margin-bottom: 0;
+    color: var(--bs-card-cap-color);
+	background: inherit;
+    border-bottom: 2px solid var(--theme);
+}
 	.navigations {
 		text-align: center;
 		cursor: pointer;
@@ -214,6 +225,11 @@
 		.employer-text{
 			margin-top: -2rem;
 		}
+		
+		.container-employer > .row {
+			overflow-x: auto;
+		}
+
 		
 
 
