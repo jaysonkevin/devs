@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use Illuminate\Auth\Events\Verified;
 use App\Models\User;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -78,7 +79,24 @@ Route::get('/job/{id}', function () {
     return view('index');
 });
 
+Route::get('/pricing' , function(){
+    return view('index');
+});
+Route::get('/aboutus' , function(){
+    return view('index');  
+});
 
+Route::get('/contactus' , function(){
+    return view('index');  
+});
+
+Route::get('/modelfaq' , function(){
+    return view('index');  
+});
+
+Route::get('/employerfaq' , function(){
+    return view('index');  
+});
 
 #TESTING ROUTES
 Route::middleware('auth:sanctum')->get('removetoken', function () {

@@ -1,7 +1,37 @@
 <template>
-     <div class="container">
-        <h1>About Page</h1>
-        <router-link to="/">home</router-link>
-        <router-view/>
-     </div>
+
+   <nav class="navbar navbar-expand-md nav-header-theme bg-light fixed-top-nav">
+      <div class="container">
+      <router-link :to="'/'" class="home-text" > FREELANCE  </router-link>
+      </div>
+   </nav>
+<div class="bg-light">
+  <div class="container py-5">
+    <div class="row h-100 align-items-center py-5">
+      <div class="col-lg-6">
+        <h1 class="display-4">About Freelance </h1>
+
+        <p>
+         Freelance is a software solution that helps aspriring fashion models and companies to link each other as easy as possible around the world.
+
+         For further information, contact us at <b>freelancing@gmail.com</b>.
+        </p>
+      </div>
+      <div class="col-lg-6 d-none d-lg-block"><img src="https://bootstrapious.com/i/snippets/sn-about/illus.png" alt="" class="img-fluid"></div>
+    </div>
+  </div>
+</div>
+
+<footer class="bg-light pb-5">
+  <div class="container text-center">
+    <p class="font-italic text-muted mb-0">&copy; Copyrights freelance.com All rights reserved.</p>
+  </div>
+</footer>
+
 </template>
+<style>
+.home-text{
+   color:inherit;
+}
+
+</style>

@@ -1,6 +1,5 @@
 <template>
-
-    <nav v-if="uData != null" class="navbar navbar-expand-md nav-header-theme bg-light fixed-top-nav">
+    <nav v-if="uData" class="navbar navbar-expand-md nav-header-theme bg-light fixed-top-nav">
         <div class="container">
             <router-link :to="'/employer/home/'"  > FREELANCE  </router-link>
             <div class="nav-data">
@@ -40,7 +39,7 @@
     <!-- Navigation LOGGED OUT -->
     <nav v-else class="navbar navbar-expand-md nav-header-theme bg-light fixed-top-nav">
         <div class="container">
-            <a class="navbar-brand" href="#">Freelance Model</a>
+            <router-link :to="'/employer/'"  > FREELANCE  </router-link>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
             </button>

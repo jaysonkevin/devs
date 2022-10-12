@@ -26,10 +26,26 @@ class UserImageController extends Controller
       ]);
       
     
-
+      $allowed = [
+         "jpeg",
+         "png",
+         "jpg",
+         "PNG" ,
+         "JPG",
+         "JPEG"
+      ];
       $image = $request->file('image');
+           
+      if(!in_array( $image->extension() , $allowed )){
+       
+         return response()->json([
+            "status" => false
+         ]);
+      }
+
       $input['imagename'] = time().'.'.$image->extension();
-   
+
+    
       $destinationPath = storage_path('/photo'.'/'.auth()->user()->folder);
 
       $img = Image::make($image->path());

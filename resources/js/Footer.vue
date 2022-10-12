@@ -66,7 +66,7 @@
 		<!-- Section: Links  -->
 
 		<!-- Copyright -->
-		<div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
+		<div class="text-center p-4 copyright" style="background-color: rgba(0, 0, 0, 0.05);">
 			© {{currentDate}} Copyright:
 		</div>
 	<!-- Copyright -->
@@ -106,7 +106,11 @@
 
     footer {
 		margin-top: -2rem;
-		background-color:var(--theme) ;
+		background-color:inherit ;
+	}
+
+	.copyright {
+		background-color: var(--theme) !important;
 	}
 
 	.section-footer {

@@ -62,6 +62,10 @@ const routes = [
     { path: '/model/register', component: () =>import('./routes/pages/model/Register.vue') },
     { path: '/login', component: () =>import('./Home.vue') },
     { path: '/register', component: () =>import('./Home.vue') },
+    { path: '/aboutus', component: () =>import('./routes/About.vue') },
+    { path: '/contactus', component: () =>import('./Contact.vue') },
+    { path: '/employerfaq', component: () =>import('./EmployerFAQ.vue') },
+    { path: '/modelfaq', component: () =>import('./ModelFAQ.vue') },
 
     // restricted pages
     {
@@ -116,6 +120,11 @@ const routes = [
       path : "/reset/:token/:email",
       name :"reset",
       component: () => import("./components/ResetPasswordForm.vue")
+    },
+    {
+      path : "/pricing",
+      name :"pricing",
+      component: () => import("./Pricing.vue")
     }
 
 

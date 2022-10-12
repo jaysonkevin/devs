@@ -89,14 +89,16 @@
 			</div>
 		</div>
 	</div>
-
+	<Footer></Footer>
 </template>
 
 <script>
 	import HeaderEmployer from './../HeaderEmployer';
+	import Footer from '../../../Footer.vue';
 	export default {
 		components : {
-			HeaderEmployer
+			HeaderEmployer,
+			Footer
 		}
 	}
 </script>

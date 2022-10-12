@@ -243,7 +243,9 @@
     }
 </script>
 <style>
-
+  svg { 
+    position: inherit !important;
+  }
  .vue-star-rating {
     display: inline !important;
  }

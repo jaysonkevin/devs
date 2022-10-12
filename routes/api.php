@@ -14,6 +14,7 @@ use App\Http\Controllers\JobController;
 use App\Http\Controllers\JobApplicationController;
 use App\Http\Controllers\ModelNotificationController;
 use Illuminate\Support\Facades\Password;
+use App\Http\Controllers\ContactUsController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -28,7 +29,7 @@ use Illuminate\Support\Facades\Password;
 # PUBLIC ROUTES 
 Route::post('/resetpassword' , [ForgotPasswordController::class,'sendResetLinkEmail']);
 Route::post('/reset-password'  , [ResetPasswordController::class,'reset']);
-
+Route::post("contactus" ,[ContactUsController::class,'contact_us']);
 # CHECK IF TOKEN IS EXPIRED OR NOT
 Route::post("checkResetToken" , [ResetPasswordController::class,'checkResetToken']);
 

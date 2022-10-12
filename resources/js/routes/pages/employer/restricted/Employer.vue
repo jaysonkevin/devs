@@ -133,7 +133,7 @@
                         </div>
                    </div>
                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button"  class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-theme">Save changes</button>
                     </div>
                 </Form>
@@ -199,7 +199,10 @@
 
               
                 axios.post('api/updateCompany',values).then(response => {
-
+                    if(response.data.status == true){
+                        document.documentElement.querySelector(".modal.fade.show .btn-close").click();
+                        this.$toast.success('Success') 
+                    }
                 }).catch((error) => {
 
                 });
@@ -221,20 +224,35 @@
                 this.imgHolder = files;
                 this.createFile(files[0]);
 
-                this.triggerUpload = true
+                
             },
             createFile(file) {
+                
+                  if (file.type.match('image.gif')) {
+                   
+                    this.$toast.error('gif not allowed',{
+                        position:'top'
+                    }) 
+                    
+                   
+                    return false;
+                }
                 if (!file.type.match('image.*')) {
-                    alert('Select an image');
-                return;
+                   
+                    this.$toast.error('must be a an image',{
+                        position:'top'
+                    }) 
+                   
+                    return false;
                 }
 
+                this.triggerUpload = true
                 var img = new Image();
                 var reader = new FileReader();
                 var vm = this;
-                
+               
                 reader.onload = function(e) {
-                vm.image = e.target.result;
+                    vm.image = e.target.result;
                 }
                 reader.readAsDataURL(file);
             },
@@ -246,8 +264,14 @@
                 let data = new FormData();
                 data.append('image', this.imgHolder[0]);
                 data.append('is_profile', 'Y')
-            
+                var toast = this.$toast;
                 axios.post('/api/imageUpload',data).then(function (response) {
+                    if(response.data.status == false){
+                        toast.error('something went wrong , page will reload',{
+                            position:'top'
+                        }) 
+                        
+                    }
                     window.location.reload()
                 });
             }

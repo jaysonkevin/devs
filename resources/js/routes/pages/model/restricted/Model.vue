@@ -235,18 +235,31 @@
                 this.imgHolder = files;
                 this.createFile(files[0]);
 
-                this.triggerUpload = true
+               
             },
             createFile(file) {
-                if (!file.type.match('image.*')) {
-                    alert('Select an image');
-                return;
-                }
+                if (file.type.match('image.gif')) {
+                   
+                   this.$toast.error('gif not allowed',{
+                       position:'top'
+                   }) 
+                   
+                  
+                   return false;
+               }
+               if (!file.type.match('image.*')) {
+                  
+                   this.$toast.error('must be a an image',{
+                       position:'top'
+                   }) 
+                  
+                   return false;
+               }
 
                 var img = new Image();
                 var reader = new FileReader();
                 var vm = this;
-                
+                this.triggerUpload = true
                 reader.onload = function(e) {
                 vm.image = e.target.result;
                 }
@@ -257,11 +270,18 @@
                 this.triggerUpload = false;
             } ,
             submitUpload (){
+                var toast = this.$toast;
                 let data = new FormData();
                 data.append('image', this.imgHolder[0]);
                 data.append('is_profile', 'Y')
             
                 axios.post('/api/imageUpload',data).then(function (response) {
+                    if(response.data.status == false){
+                        toast.error('something went wrong , page will reload',{
+                            position:'top'
+                        }) 
+                        
+                    }
                     window.location.reload()
                 });
             }

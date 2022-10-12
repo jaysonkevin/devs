@@ -143,7 +143,7 @@
                         <div class="mb-3">
                             <label class="form-label">Job Description<i class='fa-solid fa-asterisk'></i> </label>
                             <Field class="flat-input" placeholder="Company Description " rows="5" cols="20"  v-model="activeJob.job_description" name="job_description" as="textarea"></Field>
-                                <ErrorMessage class="text-danger errormessage " name="job_description" />
+                            <ErrorMessage class="text-danger errormessage " name="job_description" />
                             <Field name="next" type="text" id="loginfield_" />
                         </div>
                         <div class="mb-3">
@@ -266,7 +266,7 @@
                 if(values.next == undefined) values.next="_next_valid_login_"; values.is_valid_ = false;
 
                 axios.post('api/addjob' , values).then(response => {
-                    console.log(response.data.status)
+            
                     if(response.data.status == false){
                         this.limitErrorMessage = true
                         return false;
@@ -288,7 +288,10 @@
                 if(values.next == undefined) values.next="_next_valid_login_"; values.is_valid_ = false;
 
                 axios.post('api/editjob' , values).then(response => {
-                    
+                    if(response.data.status == true){
+                        document.documentElement.querySelector(".modal.fade.show .btn-close").click();
+                        this.$toast.success('Success') 
+                    }
                 }).catch((error) => {
                     
                 });
