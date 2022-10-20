@@ -34,10 +34,13 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->text('folder');
+            $table->bigInteger('braintree_id')->nullable();
+            $table->bigInteger('balance')->unsigned()->nullable();
             $table->rememberToken();
             $table->timestamps();
 
             $table->index(['user_status']);
+            $table->index(['braintree_id']);
             $table->index(['type' ,'user_status']);
             $table->index(['country_code']);
             $table->index(['region']);

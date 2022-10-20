@@ -1,7 +1,7 @@
 <template>
     <nav v-if="uData" class="navbar navbar-expand-md nav-header-theme bg-light fixed-top-nav">
         <div class="container">
-            <router-link :to="'/employer/home/'"  > FREELANCE  </router-link>
+            <router-link :to="'/employer/home/'" ><img :src="'/image/logo.png'" height="150" style="margin-bottom:-80px;"  /></router-link>
             <div class="nav-data">
                 <a href="#">
                     <i v-if="notif >0 "  @click="showNotifs" class="fa-solid px-1 fa-bell  position-relative">
@@ -39,7 +39,7 @@
     <!-- Navigation LOGGED OUT -->
     <nav v-else class="navbar navbar-expand-md nav-header-theme bg-light fixed-top-nav">
         <div class="container">
-            <router-link :to="'/employer/'"  > FREELANCE  </router-link>
+            <router-link :to="'/employer/'" ><img :src="'/image/logo.png'" height="150" style="margin-bottom:-80px;"  /></router-link>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
             </button>

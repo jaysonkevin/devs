@@ -22,7 +22,7 @@ class AuthCheckerController extends Controller
         if(auth()->user()){
             $result = AuthChecker::where("id" ,auth()->user()->id )->first();
             
-           
+            
 
             # GET PROFILE IMAGE 
             $img = UserImage::select("image")->where("user_id" ,auth()->user()->id )->where("is_profile" , 'Y')->where("status" , 'A')->first();
@@ -32,6 +32,18 @@ class AuthCheckerController extends Controller
                 # ADD IMAGE PLACEHOLDER
                  $profile_image  = 'https://www.w3schools.com/howto/img_avatar.png';
             }
+
+
+             // braintree setup
+            $gateway = new \Braintree\Gateway([
+                'environment' => env('BRAINTREE_ENVIRONMENT'),
+                'merchantId' => env('BRAINTREE_MERCHANT_ID'),
+                'publicKey' => env('BRAINTREE_PUBLIC_KEY'),
+                'privateKey' =>env('BRAINTREE_PRIVATE_KEY')
+            ]);
+
+           
+
             
             if($result->type == 'E'){
                 $company = EmployerCompany::where("user_id" ,  $result->id)->first();
@@ -40,7 +52,8 @@ class AuthCheckerController extends Controller
                     "company_display" => (isset($company->company_display)) ?  $company->company_display : '',
                     "company_description" =>  (isset($company->company_description)) ? $company->company_description : '',
                     "company_phone"  => (isset($company->company_phone) ) ? $company->company_phone : NULL,
-                    "company_address"  => (isset($company->company_address) ) ? $company->company_address : NULL
+                    "company_address"  => (isset($company->company_address) ) ? $company->company_address : NULL ,
+                    "brain" => $gateway->clientToken()->generate()
                 ];
             } else{
                 $c = [];

@@ -1,6 +1,7 @@
 <template>
     <section>
         <HeaderEmployer :uData="userData"></HeaderEmployer>
+    
         <div v-if="valid" class="container py-5">
             <div class="row">
                 <div class="col-sm-3">
@@ -52,14 +53,14 @@
                                 <a class="nav-link"  data-bs-toggle="tab" href="#archive" role="tab" @click="getArchiveData" aria-controls="#archive" aria-selected="false">Archived Job Ads</a>
                             </li> -->
                             <li class="nav-item" role="presentation">
-                                <a class="nav-link"  data-bs-toggle="tab" href="#currenct_subscription" role="tab" aria-controls="#currenct_subscription" aria-selected="false">Subscription History</a>
+                                <a class="nav-link"  data-bs-toggle="tab" href="#currenct_subscription" @click="getSubscription" role="tab" aria-controls="#currenct_subscription" aria-selected="false">Subscription History</a>
                             </li>
                         </ul>
                    </div>
                    <div class="container mt-2">
                         <div class="tab-content" >
                             <JobAds  :jobs="getActiveJobsStatus"></JobAds>
-                            <Archive :archive="getArchive"></Archive>
+                            <Subscriptions :getSubscription="getSubscriptionStatus"></Subscriptions>
                         </div>
                    </div>
                 </div>
@@ -144,7 +145,7 @@
 
 <script>
     import JobAds from './frontend/JobAds'
-    import Archive from './frontend/Archive'
+    import Subscriptions from './frontend/Subscriptions'
     import HeaderEmployer from './../../HeaderEmployer';
     import { Form, Field, ErrorMessage } from 'vee-validate';
     import * as yup from 'yup';
@@ -155,7 +156,7 @@
             ErrorMessage,
             HeaderEmployer,
             JobAds,
-            Archive
+            Subscriptions
             
         },
         data() {
@@ -181,10 +182,14 @@
                 getActiveJobsStatus : false,
                 imgHolder : [],
                 image: '',
-                triggerUpload : false
+                triggerUpload : false ,
+                getSubscriptionStatus : false
             }
         },
         methods : {
+            getSubscription () {
+                this.getSubscriptionStatus = true;
+            },
             logout () {
                 axios.post('api/logout').then(response => {
                     localStorage.clear();
@@ -218,6 +223,7 @@
             getActiveJobs (){   
                 this.getArchive = false;
                 this.getActiveJobsStatus = true;
+                this.getSubscriptionStatus = false;
             },
             onChange(e) {
                 var files = e.target.files;

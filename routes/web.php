@@ -98,6 +98,10 @@ Route::get('/employerfaq' , function(){
     return view('index');  
 });
 
+Route::get('/checkout/{id}/{price}' , function(){
+    return view('index');  
+});
+
 #TESTING ROUTES
 Route::middleware('auth:sanctum')->get('removetoken', function () {
     return  auth()->user()->tokens()->delete();

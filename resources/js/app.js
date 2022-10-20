@@ -14,13 +14,16 @@ import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 import Toaster from '@meforma/vue-toaster';
 import '../js/global'
+
+
 //jayson pogi
 const token =  localStorage.getItem('u_t'); 
 window.axios.defaults.baseURL = process.env.MIX_PUBLIC_URL
 window.axios.defaults.withCredentials = true;
 window.axios.defaults.headers.common = {
   'X-Requested-With': 'XMLHttpRequest',
-  'Authorization': `Bearer ${token}` 
+  'Authorization': `Bearer ${token}` ,
+  'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
 
 };
 
@@ -125,6 +128,11 @@ const routes = [
       path : "/pricing",
       name :"pricing",
       component: () => import("./Pricing.vue")
+    },
+    {
+      path : "/checkout/:id/:price",
+      name :"checkout",
+      component: () => import("./Checkout.vue")
     }
 
 
@@ -156,8 +164,6 @@ let featured = createApp({
 })
 
 .mount('#app')
-
-
 
 
 

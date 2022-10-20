@@ -15,6 +15,8 @@ use App\Http\Controllers\JobApplicationController;
 use App\Http\Controllers\ModelNotificationController;
 use Illuminate\Support\Facades\Password;
 use App\Http\Controllers\ContactUsController;
+use App\Http\Controllers\PaymentsController;
+use App\Http\Controllers\SubscriptionController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -81,8 +83,13 @@ Route::group(['middleware'=>['auth:sanctum']] , function(){
     Route::post('applicant', [ JobApplicationController::class, 'applicant' ]);
     Route::post('hire', [ JobApplicationController::class, 'hire' ]); 
     Route::post('rateApplicant', [ JobApplicationController::class, 'rateApplicant' ]);   
-    Route::post('rate_description', [ JobApplicationController::class, 'rate_description' ]);
+    Route::post('rate_description', [ JobApplicationController::class, 'rate_description' ]); 
+    Route::post('subscriptions', [ SubscriptionController::class, 'index' ]);
     #END EMPLOYER
+
+
+    #CHECKOUT
+    Route::post("checkout" ,[PaymentsController::class ,'checkout']);
 });
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

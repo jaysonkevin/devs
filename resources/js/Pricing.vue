@@ -44,7 +44,9 @@
                                 </li>
                             </ul>
                         </div>
-                        <router-link class=" btn btn-theme " to="/employer/register">Buy</router-link>
+                       
+                        <router-link v-if="isLogged" class=" btn btn-theme " to="/checkout/1/29">Buy</router-link>
+                        <router-link v-else class=" btn btn-theme " to="/employer/login">Buy</router-link>
                         <router-view />
                     </div>
                 </div>
@@ -65,26 +67,49 @@
                                 </li>
                             </ul>
                         </div>
-                        <router-link class=" btn btn-theme " to="/employer/register">Buy</router-link>
+                        <router-link v-if="isLogged" class=" btn btn-theme " to="/checkout/2/100">Buy</router-link>
+                        <router-link v-else class=" btn btn-theme " to="/employer/login">Buy</router-link>
                         <router-view />
                     </div>
                 </div>
             </div>
         </div>
+        <div class="col-12 col-md-12 col-lg-12" v-if="showpayment">
+           <div class="row">
+                <div class="col-lg-6">
+                    <p>{{userData.firstname}} {{userData.lastname}}</p>
+                    <p>{{userData.email}}</p>
+                    <p>{{price}}</p>
+                </div>
+                <div id="dropin-container" class="col-lg-6">
+
+                   
+                </div>
+               <div class="col-offset-6 col-lg-6 pull-right">
+                    <a class="btn btn-md btn-theme"  >Pay</a>
+               </div>
+                
+           </div>
+        </div>
     </div>
    
 </div>
 </template>
-<script>
+<script defer>
     import HeaderEmployer from './routes/pages/HeaderEmployer.vue';
+    //var button = document.getElementById('submit-button');
     export default {
         components : {
 			HeaderEmployer
 		},
+       
         data(){
             return {
                 userData : '' ,
-                isLogged : false
+                isLogged : false,
+                brain : '' ,
+                price  : '',
+                showpayment : false 
             }
         },
         beforeCreate (){ 
@@ -92,13 +117,13 @@
                 if(response.data.has_error == false){
                     axios.get('api/cUL').then(response => {
                         this.userData = response.data.u
+                        this.brain = response.data.c.brain
                         this.isLogged = true;
                     });
                 } 
             }).catch((error) => {
                 this.isLogged = false;
             });
-
         },
     }
 </script>

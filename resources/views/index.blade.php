@@ -3,8 +3,10 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+       
         <link rel="stylesheet" href="{{ mix('css/app.css') }}">
         <meta name="csrf-token" content="{{ csrf_token() }}">
+
        
         <title>Software</title>
 
@@ -17,7 +19,7 @@
        </div>
        <div id="modals"></div>
       
-      
     </body>
     <script src="{{ asset('js/app.js') }}"></script>
+    <script src="https://js.braintreegateway.com/web/dropin/1.24.0/js/dropin.min.js"></script>
 </html>

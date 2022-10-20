@@ -2,7 +2,7 @@
   	<!-- Navigation -->
 	  <nav v-if="hasLogged" class="navbar navbar-expand-md nav-header-theme bg-light fixed-top-nav">
 		<div class="container">
-			<a class="navbar-brand" href="#">Freelance Model</a>
+			<router-link :to="'/'" ><img :src="'/image/logo.png'" height="150" style="margin-bottom:-80px;"  /></router-link>
 			<router-link v-if="userData.type == 'M' " class="btn btn-dashboard btn-theme   " to="/model"> <i class="fa fa-dashboard"></i> Dashboard</router-link>
 			<router-link v-else class="btn  btn-theme btn-dashboard " to="/employer/home"><i class="fa fa-dashboard"></i> Dashboard</router-link>
 			
@@ -10,7 +10,7 @@
 	</nav>
 	<nav v-else class="navbar navbar-expand-md nav-header-theme bg-light fixed-top-nav">
 		<div class="container">
-			<a class="navbar-brand" href="#">Freelance Model</a>
+			<router-link :to="'/'" ><img :src="'/image/logo.png'" height="150" style="margin-bottom:-80px;"  /></router-link>
 			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 			</button>
@@ -65,7 +65,6 @@
 	  
 	<div class="container home home-view2">
 		<h3 class="home-header">Post Job Offers Easily And Free</h3>
-
 		<div class="container container-employer">
 			<div class="row flex-nowrap">
 				<div class="col-sm-4 mb-2">
@@ -111,13 +110,15 @@
 
 </template>
 <script >
-  import Footer from './Footer.vue'
+  import axios from 'axios';
+import Footer from './Footer.vue'
   export default {
 	data () {
 		return {
 			currentDate : '',
 			userData : [] ,
-			hasLogged : false
+			hasLogged : false,
+			brain : ''
 		}
 	},
 	components : {
@@ -132,11 +133,15 @@
 		axios.get('api/cUL').then(response => {
 			
 			this.userData = response.data.u
+			this.brain = response.data.c.brain
 			this.hasLogged  = !this.hasLogged
 		}).catch((error) => {
 			localStorage.clear();
 			this.hasLogged  = false;
 		});
+	},
+	methods : {
+		
 	}
 }
 </script>
