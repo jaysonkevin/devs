@@ -112,7 +112,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // # AUTHENTICATED LINKS
 Route::group(['middleware'=>['auth:sanctum']] , function(){
-
+  
     Route::get('/model/notification/{id}', function () {
         return view('index');
     });

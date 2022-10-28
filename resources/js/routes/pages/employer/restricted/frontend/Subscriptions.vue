@@ -1,7 +1,7 @@
 <template>
     <div id="currenct_subscription" class="tab-pane fade ">
         <div class="table-responsive">
-            <table class="table">
+            <table  class="table table-borderless">
             <thead>
                 <tr class="thead">
                     <th  scope="col ">Subcription Name </th>
@@ -12,8 +12,8 @@
             <tbody>
                 <tr v-if="subscriptionData.data" v-for="(item , index) in subscriptionData.data" :key="item" :value="item.id"  scope="row">
                     <td>{{item.name}}</td>
-                    <td>{{item.price}}</td>
-                    <td>{{item.created_at}}</td>
+                    <td>${{item.price}}</td>
+                    <td>{{item.date}}</td>
                 </tr>   
 
                 <tr v-else  scope="row">

@@ -18,8 +18,8 @@ class AuthCheckerController extends Controller
 
 
     public function index (Request $request) {
-       
-        if(auth()->user()){
+        
+        if($request->user()){
             $result = AuthChecker::where("id" ,auth()->user()->id )->first();
             
             
@@ -53,7 +53,8 @@ class AuthCheckerController extends Controller
                     "company_description" =>  (isset($company->company_description)) ? $company->company_description : '',
                     "company_phone"  => (isset($company->company_phone) ) ? $company->company_phone : NULL,
                     "company_address"  => (isset($company->company_address) ) ? $company->company_address : NULL ,
-                    "brain" => $gateway->clientToken()->generate()
+                    "brain" => $gateway->clientToken()->generate() ,
+                    "balance" => $result->balance
                 ];
             } else{
                 $c = [];

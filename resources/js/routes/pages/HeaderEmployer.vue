@@ -3,6 +3,8 @@
         <div class="container">
             <router-link :to="'/employer/home/'" ><img :src="'/image/logo.png'" height="150" style="margin-bottom:-80px;"  /></router-link>
             <div class="nav-data">
+               
+                <a href="/pricing" class="btn btn-xs">Pricing</a>
                 <a href="#">
                     <i v-if="notif >0 "  @click="showNotifs" class="fa-solid px-1 fa-bell  position-relative">
                         <span class="position-absolute top-0 start-50 translate-middle badge notifnumber rounded-pill bg-danger">{{notif}}</span>

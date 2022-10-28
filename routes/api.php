@@ -90,6 +90,7 @@ Route::group(['middleware'=>['auth:sanctum']] , function(){
 
     #CHECKOUT
     Route::post("checkout" ,[PaymentsController::class ,'checkout']);
+    Route::post("upgradeJob" ,[PaymentsController::class ,'upgradeJob']);   
 });
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

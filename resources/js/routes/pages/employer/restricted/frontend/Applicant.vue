@@ -4,8 +4,11 @@
         <HeaderEmployer :uData="userData"></HeaderEmployer>
         <div class="container">
             <div class="text-center mt-2" v-if="job_details.is_purchased == 'N'">
-                <button class="btn btn-md btn-warning"><i class="fa fa-cart-shopping"></i> Upgrade this job ad to see full info of applicants</button>
+                <div id="dropin-container"></div>
+                <button @click="buy" id="submit-button" class="btn btn-md btn-warning"><i class="fa " :class="buyIcon"></i> {{buyText}}</button>
+                
             </div>
+           
             <div v-else class="text-center mt-2">
                 <button class="btn btn-md btn-theme"><i class="fa fa-check"></i> Paid Advertisement</button>
             </div>
@@ -117,8 +120,10 @@
                 applicant_lists : [] ,
                 job_details : [],
                 rating: '' ,
-                rate_description : ''
-                
+                rate_description : '',
+                brain : '',
+                buyIcon : 'fa-cart-shopping' ,
+                buyText : ' Upgrade this job ad to see full info of applicants'
 
             }
         },
@@ -127,13 +132,14 @@
                 if(response.data.has_error == false){
                     axios.get('api/cUL').then(response => {
                         this.userData = response.data.u
+                        this.brain = response.data.c.brain
                     });
                 } 
             }).catch((error) => {
                 location.href = '/';
             });
 
-
+            
             axios.post('api/applicants' , this.$route.query).then(response => {
                this.job_details = response.data.job_details
                this.applicant_lists = response.data.applicant_lists
@@ -142,6 +148,51 @@
             });
         },
         methods : {
+            buy (){
+                var me = this;
+                let b = this.brain
+                var button = document.querySelector('#submit-button');
+
+
+                
+                braintree.dropin.create({
+                    authorization: b,
+                    container: '#dropin-container'
+                }, function (createErr, instancedrop) {
+                    if(createErr == null){
+                        me.buyText = "Pay Now"
+                    }
+                    button.addEventListener('click', function () {
+                        instancedrop.requestPaymentMethod(function (err, payload) {
+                            let array = {
+                                nonce : payload.nonce ,
+                                job_id :  me.$route.query.job
+                            }
+                            axios.post('/api/upgradeJob', array).then(response => {
+                                console.log(response)
+                               if(response.data.status == false){
+                                    me.$toast.error('Something went wrong',{
+                                        position:'top'
+                                    }) 
+
+                                    return false;
+                               }
+
+                              if(response.data.status == true ){
+                                me.$toast.success('Success !',{
+                                    position:'top'
+                                }) 
+
+                                location.reload();
+                              }
+                            
+                            }).catch(error => console.log(error)); 
+                         });
+                });
+
+                    
+                });
+            },
            
             hire (id , job_id) {
                 let parent = this;

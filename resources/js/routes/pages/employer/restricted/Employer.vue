@@ -4,7 +4,9 @@
     
         <div v-if="valid" class="container py-5">
             <div class="row">
+               
                 <div class="col-sm-3">
+                   
                     <div class="card sm-3">
                         <div class="card-body text-center">
                             <div class="profile-container">
@@ -17,6 +19,13 @@
                             <p v-if="triggerUpload">
                                 <a  href="javascript:void(0)" @click="submitUpload" class="btn btn-theme">save</a>
                                 <a  href="javascript:void(0)" @click="cancelUpload" class="btn btn-danger">cancel</a>
+                            </p>
+                            <p v-if="paidJobAds > 0" class="btn btn-theme btn-xs position-relative">
+                                Paid Job Post Left
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                {{paidJobAds}}
+                                <span class="visually-hidden">unread messages</span>
+                            </span>
                             </p>
                             <p class="text-muted mt-3 mb-1">{{companyData.company_display}}</p>
                             <small>{{userData.firstname}} {{userData.lastname}} </small>
@@ -179,11 +188,12 @@
                 companyData : [],
                 schemaCompany,
                 getArchive : false ,
-                getActiveJobsStatus : false,
+                getActiveJobsStatus : true,
                 imgHolder : [],
                 image: '',
                 triggerUpload : false ,
-                getSubscriptionStatus : false
+                getSubscriptionStatus : false,
+                paidJobAds : 0
             }
         },
         methods : {
@@ -293,6 +303,7 @@
                             this.userData = response.data.u;
                             this.companyData = response.data.c;
                             this.image = response.data.u.profile_image;
+                            this.paidJobAds = response.data.c.balance;
                        } else {
                             location.href = '/model';
                        }

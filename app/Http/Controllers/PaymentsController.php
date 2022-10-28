@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Job;
 use App\Models\Subscription;
 use DB;
 class PaymentsController extends Controller
@@ -85,10 +86,66 @@ class PaymentsController extends Controller
                 "status" => false ,
             ]);
         }
-      
-            
-      
-       
+    }
 
+    public function upgradeJob (Request $request) {
+       
+        // get the job data 
+        $jobData = Job::where("id" , $request->job_id)->first();
+
+    
+
+        // get your logged in customer
+        $customer = User::where("id",auth()->user()->id)->first();
+     
+        // brain tree customer payment nouce
+        $payment_method_nonce = $request->nonce;
+    
+        $gateway = new \Braintree\Gateway([
+            'environment' => env('BRAINTREE_ENVIRONMENT'),
+            'merchantId' => env('BRAINTREE_MERCHANT_ID'),
+            'publicKey' => env('BRAINTREE_PUBLIC_KEY'),
+            'privateKey' =>env('BRAINTREE_PRIVATE_KEY')
+        ]);
+
+        // # CHECK IF CUSTOMER HAS ID ON BRAINTREE
+        if($customer->braintree_id == null){
+            $result = $gateway->customer()->create([
+                'firstName' => $customer->firstname,
+                'lastName' =>  $customer->lastname,
+                'email' =>   $customer->email,
+            ]);
+            $customer->braintree_id = $result->customer->id;
+            $customer->save();
+        }
+
+        $res = $gateway->transaction()->sale([
+            'amount' =>29,
+            'paymentMethodNonce' => $payment_method_nonce,
+            'options' => [
+                'submitForSettlement' => True
+            ]
+        ]);
+
+        if($res->success) {
+
+            # CHANGED JOB ID TO PAID 
+            $jobData->is_purchased = 'Y';
+            $jobData->save();
+
+            # ADD SUBSCRIPTION HISTORY
+            $subscription = Subscription::create([
+                'user_id' => $customer->id,
+                "pricing_id" => 1
+            ]);
+
+            return response()->json([
+                "status" => true ,
+            ]);
+        } else{
+            return response()->json([
+                "status" => false ,
+            ]);
+        }
     }
 }

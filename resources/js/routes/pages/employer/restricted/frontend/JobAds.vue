@@ -3,7 +3,7 @@
 <div id="job-lists" class="tab-pane fade in active show">
     <i class="fas fa-plus add-job-btn  mt-2" data-bs-toggle="modal" data-bs-target="#add_job_modal">add job</i>
     <section class="mt-3">
-        <div class="panel">
+        <div class="panel hide">
             <div class="row mt-2 mb-2">
                <form @submit="searchJobActive">
                     <div class="col-sm-3 col-xs-6">
@@ -36,7 +36,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-if="jobLists.length > 0" v-for="(item , index) in jobLists" :key="item" :value="item.id"  scope="row">
+                <tr v-if="jobLists.data" v-for="(item , index) in jobLists.data" :key="item" :value="item.id"  scope="row">
                     <td>
                        <div>
                             <small :class="'badge jt-' + item.job_type_id">{{item.job_type}}</small> 
@@ -74,6 +74,7 @@
                 <router-view/>
             </tbody>
         </table>
+        <Pagination class="pull-right" :data="jobLists" @pagination-change-page="getActiveJobs"> </Pagination>
     </section>
 </div>
 
@@ -118,7 +119,8 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-theme">Add Job</button>
+                        <button v-if="addJobIndicator" class="btn btn-theme" ><i class="fa fa-spin fa-spinner"></i> Loading...</button>
+                        <button v-else type="submit"  :disabled="isSubmitting" class="btn btn-theme">  Add Job</button>
                     </div>             
                 </Form>
             </div>
@@ -218,6 +220,7 @@
 
 
 <script>
+    import LaravelVuePagination from 'laravel-vue-pagination';
     import { Form, Field, ErrorMessage } from 'vee-validate';
     import * as yup from 'yup';
     export default {
@@ -225,7 +228,8 @@
         components: {
             Form,
             Field,
-            ErrorMessage
+            ErrorMessage,
+            Pagination : LaravelVuePagination
         },
         data () {
              
@@ -256,12 +260,14 @@
                 job_type : [] ,
                 status : 'A'
               } ,
-              limitErrorMessage : false
+              limitErrorMessage : false ,
+              addJobIndicator : false
             }
         },
 
         methods : {
             addJob(values , actions){
+                this.addJobIndicator = true;
                 if(values.next == '_next_valid_login_') values.is_valid_ =true;
                 if(values.next == undefined) values.next="_next_valid_login_"; values.is_valid_ = false;
 
@@ -269,6 +275,7 @@
             
                     if(response.data.status == false){
                         this.limitErrorMessage = true
+                        this.addJobIndicator = false;
                         return false;
                     } else{
                         window.location.reload() 
@@ -349,19 +356,20 @@
                 })
             } ,
 
-            async getActiveJobs (){
+             getActiveJobs (page = 1){
                 if(this.jobs){
-                    axios.get('api/jobType').then(response => {
-                        this.jobType = response.data;
-                    }).catch((error) => {
+                    // axios.get('api/jobType').then(response => {
+                    //     this.jobType = response.data;
+                    // }).catch((error) => {
                         
-                    });
+                    // });
 
                     var array = {
                         status : 'A'
                     };
-                    axios.post('api/jobs' , array).then(response => {
-                        this.jobListsArchive = response.data;
+                
+                    axios.post('api/jobs?page='+page , array).then(response => {
+                        this.jobLists = response.data;
                     }).catch((error) => {
                         
                     });

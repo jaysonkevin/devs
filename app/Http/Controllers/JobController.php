@@ -10,6 +10,7 @@ use App\Models\JobApplication;
 use Illuminate\Support\Facades\DB;
 use Helper;
 use Carbon\Carbon;
+use App\Models\User;
 class JobController extends Controller
 {   
     public function __construct()
@@ -42,7 +43,7 @@ class JobController extends Controller
                  })
 
                 ->where("ja.status" , $request->status)
-                ->orderBy("ja.id","DESC")->get();
+                ->orderBy("ja.id","DESC")->paginate(5);
         foreach ($result as $key => $value) {
             $result[$key]->created_at  = date("d-M-Y" , strtotime($value->created_at));
 
@@ -55,18 +56,28 @@ class JobController extends Controller
 
     public function addjob (Request $data){
         Helper::honeypot($data); 
-       
-        #CHECK HOW MANY FREE JOB REMAINING
-        $checkLimitJobFree = Job::where("created_by", auth()->user()->id)
-        ->where("is_purchased" ,'N')
-        ->whereBetween("created_at" , [Carbon::today()->startOfDay() , Carbon::today()->endOfDay()] )->count(); 
 
-        if($checkLimitJobFree == $this->freeLimit){
-            return response()->json([
-                "status" => false,
-                "message" => "Free Limit Exceed",
-            ]);
+
+
+        # CHECK IF HAS A PAID BALANCE 
+        $employer = User::where("id" , $data->user()->id)->first();
+      
+        #IF NO BALANCE USE FREE AD JOB
+        if($employer->balance <= 0  || $employer->balance == NULL ){
+             #CHECK HOW MANY FREE JOB REMAINING
+             $checkLimitJobFree = Job::where("created_by", auth()->user()->id)
+             ->where("is_purchased" ,'N')
+             ->whereBetween("created_at" , [Carbon::today()->startOfDay() , Carbon::today()->endOfDay()] )->count(); 
+   
+             if($checkLimitJobFree >= $this->freeLimit){
+                 return response()->json([
+                     "status" => false,
+                     "message" => "Free Limit Exceed",
+                 ]);
+             }
         }
+
+        
 
         $job = Job::create([
             'created_by' => auth()->user()->id,
@@ -74,10 +85,17 @@ class JobController extends Controller
             'job_description' => $data['job_description'],
             'job_type' => $data['job_type'],
             'salary' => $data['salary'],
-            'is_purchased' => 'N'
+            'is_purchased' => ($employer->balance > 0) ? 'Y' : 'N' 
         ]);
 
         if($job->id){
+            
+
+            # UPDATE NEW USER BALANCE
+            if($employer->balance > 0){
+                $employer->balance  = $employer->balance - 1;  
+                $employer->save();
+            }
             return response()->json([
                 "status" => true,
                 "message" => "Added"
