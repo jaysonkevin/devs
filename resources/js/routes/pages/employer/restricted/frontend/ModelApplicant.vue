@@ -128,11 +128,59 @@
 
     .image-tab {
         height: 270px;
+        width: 270px;
     }
 
     .img-card{
         margin-bottom: 1rem;
     }
+    
+/* Extra small devices (phones, 600px and down) */
+  @media only screen and (max-width: 600px) {
+
+    .image-tab {
+        height: auto;
+        width: auto;
+       
+    }
+
+  }
+
+  /* Small devices (portrait tablets and large phones, 600px and up) */
+  @media only screen and (min-width: 600px) {
+    .image-tab {
+        height: auto;
+        width: auto;
+       
+    }
+  }
+
+  /* Medium devices (landscape tablets, 768px and up) */
+  @media only screen and (min-width: 768px) {
+    .image-tab {
+        height: auto;
+        width: auto;
+       
+    }
+  }
+
+  /* Large devices (laptops/desktops, 992px and up) */
+  @media only screen and (min-width: 992px) {
+    .image-tab {
+        height: 270px;
+        width: 270px;
+       
+    }
+  }
+
+  /* Extra large devices (large laptops and desktops, 1200px and up) */
+  @media only screen and (min-width: 1200px) {
+    .image-tab {
+        height: 270px;
+        width: 270px;
+    }
+  }
+
 </style>
 <script>
     import HeaderEmployer from './../../../HeaderEmployer';

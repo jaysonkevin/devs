@@ -1,7 +1,7 @@
-<template>
+<template> 
     <nav v-if="uData" class="navbar navbar-expand-md nav-header-theme bg-light fixed-top-nav">
         <div class="container">
-            <router-link :to="'/employer/home/'" ><img :src="'/image/logo.png'" height="150" style="margin-bottom:-80px;"  /></router-link>
+            <router-link :to="'/employer/home/'" ><img :src="'/image/logo.png'" class="logo-img"  height="150" style="margin-bottom:-80px;"  /></router-link>
             <div class="nav-data">
                
                 <a href="/pricing" class="btn btn-xs">Pricing</a>
@@ -22,7 +22,7 @@
                                     </router-link>        
                                     <hr class="hr hr-blurry" />
                                 </li> 
-                                <li v-if="pagination.currentPage != pagination.lastPage" class="notif-listing  text-center">
+                                <li v-if="pagination.currentPage != pagination.lastPage" class="  text-center">
                                     <a href="javascript:void(0);" @click="viewMoreNotif" class="btn btn-xs btn-theme">view more</a>
                                 </li> 
                         
@@ -41,7 +41,7 @@
     <!-- Navigation LOGGED OUT -->
     <nav v-else class="navbar navbar-expand-md nav-header-theme bg-light fixed-top-nav">
         <div class="container">
-            <router-link :to="'/employer/'" ><img :src="'/image/logo.png'" height="150" style="margin-bottom:-80px;"  /></router-link>
+            <router-link :to="'/employer/'" ><img :src="'/image/logo.png'" class="logo-img"  height="150" style="margin-bottom:-80px;"  /></router-link>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
             </button>

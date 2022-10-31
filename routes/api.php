@@ -65,7 +65,8 @@ Route::group(['middleware'=>['auth:sanctum']] , function(){
     Route::get('mNotification', [ ModelNotificationController::class, 'index' ]);  
     Route::get('getNotifListM', [ ModelNotificationController::class, 'getNotifListM' ]);  
     Route::post('getRatingsData', [ ModelNotificationController::class, 'getRatingsData' ]);  
-    Route::post('removeImg', [ UserImageController::class, 'removeImg' ]); 
+    Route::post('removeImg', [ UserImageController::class, 'removeImg' ]);  
+    Route::post('notification', [ ModelNotificationController::class, 'notification' ]); 
     #END MODEL
 
 

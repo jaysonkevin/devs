@@ -2,7 +2,7 @@
     <section>
         <nav class="navbar navbar-expand-md nav-header-theme bg-light fixed-top-nav">
             <div class="container">
-                <router-link :to="'/'" ><img :src="'/image/logo.png'" height="150" style="margin-bottom:-80px;"  /></router-link>
+                <router-link :to="'/'" ><img :src="'/image/logo.png'" height="150" class="logo-img" style="margin-bottom:-80px;"  /></router-link>
             </div>
         </nav>
         <div class="container mt-5">

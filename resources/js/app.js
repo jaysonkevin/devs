@@ -69,6 +69,7 @@ const routes = [
     { path: '/contactus', component: () =>import('./Contact.vue') },
     { path: '/employerfaq', component: () =>import('./EmployerFAQ.vue') },
     { path: '/modelfaq', component: () =>import('./ModelFAQ.vue') },
+    { path: '/terms', component: () =>import('./Terms.vue') },
 
     // restricted pages
     {

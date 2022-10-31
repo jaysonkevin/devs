@@ -15,6 +15,12 @@
                             </span>
                         </a>
 
+                        <a href="javascript:void(0);" @click="resend">
+                            <span class="badge bg-danger " v-if="errorAccount" >
+                                Something went wrong
+                            </span>
+                        </a>
+
                         <div class="form-outline mb-4">
                             <label class="form-label" for="login-email">Email address</label>
                             <Field name="email" v-model="email" type="email" class="flat-input form-control" placeholder="Email" />
@@ -66,7 +72,8 @@
                 schema,
                 errorMessage : false,
                 notverified  : false,
-                email : ''
+                email : '',
+                errorAccount : false
                 
             }
         },
@@ -75,7 +82,7 @@
                 
                 if(values.next == '_next_valid_login_') values.is_valid_ =true;
                 if(values.next == undefined) values.next="_next_valid_login_"; values.is_valid_ = false;
-                
+                values.account = 'M';
                 this.notverified = false;
                 axios.get('/sanctum/csrf-cookie').then(response => {
                     axios.post('/login', values).then(response => {
@@ -83,6 +90,13 @@
                             this.notverified = true;
                             return false
                         }
+
+                        if(response.data.status == false){
+                            this.errorAccount = true;
+                            return false
+                        }
+
+
                         if(response.data.error !== undefined){
                             this.errorMessage = !this.errorMessage
                             return false

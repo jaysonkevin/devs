@@ -3,7 +3,7 @@
         <!-- Navigation -->
         <nav v-if="uData.id != null" class="navbar navbar-expand-md nav-header-theme bg-light fixed-top-nav">
             <div class="container">
-                <router-link :to="'/model'" ><img :src="'/image/logo.png'" height="150" style="margin-bottom:-80px;"  /></router-link>
+                <router-link :to="'/model'" ><img :src="'/image/logo.png'" class="logo-img" height="150" style="margin-bottom:-80px;"  /></router-link>
                 <div class="nav-data">
                     <a href="#">
                         <i v-if="notif > 0 "  @click="showNotifs" class="fa-solid px-1 fa-bell  position-relative">
@@ -20,7 +20,7 @@
                                         </router-link>        
                                         <hr class="hr hr-blurry" />
                                     </li> 
-                                    <li v-if="currentPage != lastPage" class="notif-listing  text-center">
+                                    <li v-if="currentPage != lastPage" class="text-center">
                                         <a href="javascript:void(0);" @click="viewMoreNotif" class="btn btn-xs btn-theme">view more</a>
                                     </li> 
                             
@@ -72,6 +72,7 @@
         padding-left: 10px;
         background-color: #F4F4F4;
         transition: 0.5s;
+        margin-top: -15px;
     }
 
     .profCont{
@@ -223,6 +224,7 @@
                               "rating" : item.rating,
                               "rating_description" : item.rating_description,
                               "user_id" : item.user_id,
+                              "id" : item.id
                             })
                         });
                     }

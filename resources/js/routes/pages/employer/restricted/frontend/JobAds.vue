@@ -3,20 +3,21 @@
 <div id="job-lists" class="tab-pane fade in active show">
     <i class="fas fa-plus add-job-btn  mt-2" data-bs-toggle="modal" data-bs-target="#add_job_modal">add job</i>
     <section class="mt-3">
-        <div class="panel hide">
+        <div class="panel">
             <div class="row mt-2 mb-2">
                <form @submit="searchJobActive">
                     <div class="col-sm-3 col-xs-6">
                         <input type="text" class="flat-input" v-model="searchArray.job_title"  name="job_title" placeholder="Search Job" >
                     </div>
-                    <div class="col-sm-6 col-xs-6 ">
+                    <!-- <div class="col-sm-6 col-xs-6 ">
                         <div class="form-check form-check-inline"   v-for="(item,index) in jobType" :key="item" >
                             <input class="form-check-input"  type="checkbox" :id="index" name="job_type" :value="item" v-model="searchArray.job_type"  />
                             <label class="form-check-label" :for="index">{{item.job_type}}</label>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="pull-left mt-2">
-                        <button type="submit"  class="btn btn-xs btn-theme"><i class="fa fa-search"></i> Search</button>
+                        <button type="submit"  class="btn btn-sm btn-theme"><i class="fa fa-search"></i> Search</button>
+                        <a  style="margin-left:0.3rem;" v-if="isSearch" href="javascript:void(0)" @click="resetSearch" class="btn btn-sm btn-warning"><i class="fa fa-refresh"></i> Reset Search</a>
                     </div>
                </form>
             </div>
@@ -47,7 +48,7 @@
                     <td><span class="badge rounded-pill bg-info ">{{item.applicants}}</span> </td>
                     <td>
                         <div class="btn-group">
-                        <button class="btn btn-theme actionbtn btn-xs dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <button class="btn btn-theme actionbtn btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                            Action
                         </button>
                         <ul class="dropdown-menu">
@@ -261,7 +262,8 @@
                 status : 'A'
               } ,
               limitErrorMessage : false ,
-              addJobIndicator : false
+              addJobIndicator : false,
+              isSearch : false
             }
         },
 
@@ -379,12 +381,18 @@
                 e.preventDefault();
                 axios.post('api/jobs' , this.searchArray).then(response => {
                     this.jobLists = response.data;
+                    this.isSearch = true;
                 }).catch((error) => {
                     
                 });
                
+            } , 
+            resetSearch () {
+                this.getActiveJobs()
+                this.isSearch = false;
+                this.searchArray.job_title = ''
             }
-    
+     
         },
         watch: {
             jobs() {

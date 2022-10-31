@@ -12,7 +12,7 @@
                 <div class="col-md-4 col-xs-4" v-for="(item, index) in imagesHolder">
                     <div class="card img-card">
                         <div class="card-header">
-                           <span @click="removeImg(item.id , index)" style="cursor:pointer"> <i class="fa fa-trash"  style="color:red"></i> Remove </span>
+                           <span @click="removeImg(item.id , index)" style="cursor:pointer"> <i class="fa fa-trash"  style="color:red" title="remove"></i></span>
                         </div>
                         <div class="card-body"  >
                             <img
@@ -69,7 +69,8 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-theme" :disabled="isSubmitting"   v-if="image">Upload Image <i v-show="isSubmitting" class="fa fa-spin fa-spinner"></i></button>
+                        <button type="submit" class="btn btn-theme" :disabled="isSubmitting"  v-if="image">Upload Image </button>
+                        <span v-if="imgSubmitted" > <i  class="fa fa-spin fa-spinner"></i>Processing... </span>
                     </div>
                 </Form>
             </div>
@@ -91,7 +92,8 @@
                 imgSrc : '', 
                 image: '' ,
                 imgHolder : [] ,
-                imagesHolder : []
+                imagesHolder : [] ,
+                imgSubmitted : false
             }
         },
         methods : {
@@ -145,7 +147,8 @@
                 var toast = this.$toast;
                 let data = new FormData();
                 data.append('image', this.imgHolder[0]);
-                
+                this.image = false
+                this.imgSubmitted = true;
                 axios.post('/api/imageUpload',data).then(function (response) {
                     if(response.data.status == false){
                         toast.error('something went wrong , page will reload',{
@@ -231,7 +234,7 @@
 }
 
 .btn:hover {
-  background-color: #722040;
+  background-color: #0077639d;
 }
 
 input[type="file"] {

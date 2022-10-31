@@ -90,7 +90,7 @@ trait AuthenticatesUsers
     {   
        
         Helper::honeypot($request); 
-        
+       
         # CHECK IF EMAIL IS VERIFIED
         $verified = User::select("email_verified_at")->where("email" , $request->email)->first();
        
@@ -99,6 +99,17 @@ trait AuthenticatesUsers
             echo json_encode([
                 "verified" => false,
                 "error"=> "Something went wrong!"
+            ]);
+            die;
+        } 
+
+        # CHECK IF USER LOGGED IN INTO DIFFERENT ACCOUNT TYPE
+        $account_type_checking = User::select("id")->where("email" , $request->email)->where("type" , $request->account)->first();
+        if($account_type_checking->id == null || $account_type_checking->id == NULL ){
+           
+            echo json_encode([
+                "status" => false,
+                "error"=> "Account Error!"
             ]);
             die;
         } 

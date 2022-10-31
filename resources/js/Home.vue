@@ -2,7 +2,7 @@
   	<!-- Navigation -->
 	  <nav v-if="hasLogged" class="navbar navbar-expand-md nav-header-theme bg-light fixed-top-nav">
 		<div class="container">
-			<router-link :to="'/'" ><img :src="'/image/logo.png'" height="150" style="margin-bottom:-80px;"  /></router-link>
+			<router-link :to="'/'" ><img :src="'/image/logo.png'" height="150" class="logo-img" style="margin-bottom:-80px;"  /></router-link>
 			<router-link v-if="userData.type == 'M' " class="btn btn-dashboard btn-theme   " to="/model"> <i class="fa fa-dashboard"></i> Dashboard</router-link>
 			<router-link v-else class="btn  btn-theme btn-dashboard " to="/employer/home"><i class="fa fa-dashboard"></i> Dashboard</router-link>
 			
@@ -10,7 +10,7 @@
 	</nav>
 	<nav v-else class="navbar navbar-expand-md nav-header-theme bg-light fixed-top-nav">
 		<div class="container">
-			<router-link :to="'/'" ><img :src="'/image/logo.png'" height="150" style="margin-bottom:-80px;"  /></router-link>
+			<router-link :to="'/'" ><img :src="'/image/logo.png'" class="logo-img" height="150" style="margin-bottom:-80px;"  /></router-link>
 			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 			</button>

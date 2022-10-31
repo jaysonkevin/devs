@@ -180,7 +180,7 @@
                 //region: yup.string().required().typeError("please select your region/state"),
                 country: yup.string().required(),  
                 company_phone : yup.string().required("Please Provide a Valid Mobile Number").max(255 , "Too long for mobile number").nullable(),       
-                company_address : yup.string().required("Please Provide Company Address").min(5 ,"too short for complete address").max(255 , "Too long for mobile number").nullable(), 
+                company_address : yup.string().required("Please Provide Company Address").min(5 ,"too short for complete address").max(255 , "Too long for address").nullable(), 
             });
             return {
                 valid : false , 

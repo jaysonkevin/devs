@@ -13,14 +13,14 @@
                                     <img 
                                     :src="image" 
                                     alt="avatar" class="rounded-circle profImg img-fluid" style="width: 100px;height: 100px;"/>
-                                    <p>JAyson Kevin Montemayor Company <p><strong>2022-09-03</strong></p></p>
+                                    <p>{{rated_by}} <p><strong>{{rated_date}} </strong></p></p>
                                 </div>
                                 <div class="col-sm-3 ">
                                     <StarRating 
                                             v-bind:show-rating= false
                                             active-color="#ffc107"
-                                            v-bind:star-size="20"
-                                            :rating="2"
+                                            v-bind:star-size="25"
+                                            :rating="rating"
                                             :round-start-rating="false"
                                             :read-only=true
                                     ></StarRating>
@@ -29,38 +29,11 @@
                           
                             <div class="emp_rating_desc">
                                 <p class="p_textarea">
-                                    5.5 sale with cashback worth 700+ pesos! My Fika neoflam Finally arrived.. 
-                                    thank you so much SM store,safe and maayos silang dumating,.speed lang din talaga nadeliver😊 order pa ako para makumpleto ko wag puro fangirl
-                                  
+                                  {{rating_description}}
                                 </p>
                             </div>
                         </div>
                        
-                       
-                    </div>
-                </div>
-            </div>
-
-            <div class="card mt-2 ">
-                <div class="card-body">
-                    <h3 class="mb-5 ">Rate Employer</h3>
-                    <div class="row">
-                        <div class="col-sm-4">
-                            <StarRating 
-                                    v-bind:show-rating= false
-                                    active-color="#ffc107"
-                                    v-bind:star-size="30"
-                                    :rating="rating"
-                                    :round-start-rating="false"
-                                    @update:rating ="setRating"
-                            ></StarRating>
-                            <div class="mt-4">
-                                <textarea class="form-control" v-model="rating_description" placeholder="Write a review (optional)"></textarea>
-                            </div>
-                            <div class="mt-4">
-                                <a href="javascript:void(0);" class="btn btn-theme">Submit</a>
-                            </div>
-                        </div>
                        
                     </div>
                 </div>
@@ -94,7 +67,9 @@
                 userData : [],
                 image : 'http://192.168.1.5/storage/photo/11662742460-ivnu/1664380807.jpg',
                 rating:0 ,
-                rating_description : ''
+                rating_description : '',
+                rated_by : '',
+                rated_date : ''
             }
         } ,
         methods : {
@@ -110,6 +85,15 @@
                 location.href = '/';
               
            });
+
+           axios.post("api/notification?id="+this.$route.params.id).then(response => {
+                this.rating_description = response.data.data.rating_description
+                this.rating = response.data.data.rating
+                this.image = response.data.data.profile_image
+                this.rated_by = response.data.data.rated_by_name.company_display
+                this.rated_date = response.data.data.rated_date
+           })
+           
         }
     }
 </script>

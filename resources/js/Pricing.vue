@@ -1,6 +1,11 @@
 <template>
     <HeaderEmployer :uData="userData"></HeaderEmployer>
-<div class="container d-flex flex-column">
+<div v-if="isLoading" class="container">
+    <div class="row align-items-center justify-content-center  parent ">
+        <i class="fa-solid fa-spin fa-spinner">Loading...</i>
+    </div>
+</div>
+<div v-else class="container d-flex flex-column">
     <div class="row align-items-center justify-content-center  parent ">
         <div class="col-12 col-md-12 col-lg-12">
             <p class="text-center header-pricing">Pay Only if You Need </p>
@@ -109,21 +114,30 @@
                 isLogged : false,
                 brain : '' ,
                 price  : '',
-                showpayment : false 
+                showpayment : false ,
+                isLoading : true
             }
         },
+       
         beforeCreate (){ 
-            axios.get('api/_c_').then(response => {
-                if(response.data.has_error == false){
-                    axios.get('api/cUL').then(response => {
-                        this.userData = response.data.u
-                        this.brain = response.data.c.brain
-                        this.isLogged = true;
-                    });
-                } 
-            }).catch((error) => {
-                this.isLogged = false;
-            });
+            this.isLoading = true
+            if( this.isLoading == true ){
+                axios.get('api/_c_').then(response => {
+                    if(response.data.has_error == false){
+                        axios.get('api/cUL').then(response => {
+                            this.userData = response.data.u
+                            this.brain = response.data.c.brain
+                            this.isLogged = true;
+                        });
+
+                        this.isLoading = false
+                    } 
+                }).catch((error) => {
+                    this.isLogged = false;
+                    this.isLoading = false
+                
+                });
+            }
         },
     }
 </script>

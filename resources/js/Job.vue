@@ -3,7 +3,7 @@
         <!-- Navigation -->
         <nav class="navbar navbar-expand-md nav-header-theme bg-light fixed-top-nav">
             <div class="container">
-                <router-link :to="'/'" ><img :src="'/image/logo.png'" height="150" style="margin-bottom:-80px;"  /></router-link>
+                <router-link :to="'/'" ><img :src="'/image/logo.png'" height="150"   class="logo-img" style="margin-bottom:-80px;"  /></router-link>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#model-header-nav" aria-controls="model-header-nav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
                 </button>

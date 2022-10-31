@@ -74,7 +74,7 @@
                 
                 if(values.next == '_next_valid_login_') values.is_valid_ =true;
                 if(values.next == undefined) values.next="_next_valid_login_"; values.is_valid_ = false;
-                
+                values.account = 'E';
                 this.notverified = false;
                 axios.get('/sanctum/csrf-cookie').then(response => {
                     axios.post('/login', values).then(response => {

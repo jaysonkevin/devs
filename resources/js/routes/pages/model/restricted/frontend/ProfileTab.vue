@@ -4,7 +4,7 @@
             <div class="col-lg-12">
                 <div class="">
                     <div class="">
-                        <h5 class="mb-4">Update Personal Infomations</h5>
+                        <h5 class="mb-4">Update Personal Infomation</h5>
                         <div class="row">
                             <Form  @submit="updateinfo" :validation-schema="schema" ref="form"  v-slot="{ isSubmitting }">
                                 
@@ -81,6 +81,8 @@
             ErrorMessage,
         },
         data () {
+
+            
             const schema = yup.object({
              
                 firstname: yup.string().required(),
@@ -95,7 +97,7 @@
                                 })
                                 .typeError("please enter a valid date")
                                 .required()
-                                .min("1969-11-13", "Date is too early"),
+                                .max(new Date(), "Future dates are not allowed"),
                 height: yup.number().required().typeError("please enter your height in cm"), 
                // region: yup.string().required().typeError("please select your region/state"),
                 country: yup.string().required(),
@@ -132,7 +134,9 @@
                 if(values.next == '_next_valid_login_') values.is_valid_ =true;
                 if(values.next == undefined) values.next="_next_valid_login_"; values.is_valid_ = false;
                 axios.post('api/updateinfo',values).then(response => {
-
+                    this.$toast.success('updated!',{
+                        position:'top'
+                    }) 
                 }).catch((error) => {
                 
                 });
@@ -142,7 +146,9 @@
                 if(values.next == undefined) values.next="_next_valid_login_"; values.is_valid_ = false;
 
                 axios.post('api/updateinfosocial',values).then(response => {
-
+                    this.$toast.success('updated!',{
+                        position:'top'
+                    }) 
                 }).catch((error) => {
 
                 });

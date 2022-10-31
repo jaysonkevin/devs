@@ -41,7 +41,7 @@
 
                     <div class="card  mt-2 toggle ">
                         <div class="card-body" id="social-toggle">
-                            <h5 class="my-3">Social Links {{getRatingsData}}</h5>
+                            <h5 class="my-3">Social Links</h5>
                         
                             <ul class="list-group list-group-flush rounded-3">
                                 <li class="list-group-item d-flex justify-content-between align-items-center p-3"><i class="fab fa-twitter fa-lg" style="color: rgb(85, 172, 238);"></i><p class="mb-0"> {{userData.twitter}}</p></li>
@@ -224,7 +224,10 @@
                 axios.post('api/updateinfosocial',values).then(response => {
                   
                    if(response.data.has_error == false){
-                    this.$swal("Updated");
+                        document.documentElement.querySelector(".modal.fade.show .btn-close").click();
+                        this.$toast.success('Success!',{
+                            position:'top'
+                        }) 
                    }
                 }).catch((error) => {
 
